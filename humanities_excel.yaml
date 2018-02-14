@@ -1,0 +1,88 @@
+# South Australian Museum report configuration
+---
+
+title: South Australian Museum
+columns:
+    - header: Registration Number
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: /text() != ''
+              target: CatSuffix
+              fields:
+                  - string: "."
+                  - field: CatSuffix
+    - header: Category
+      fields:
+        - table: 
+            tablename: SumCategory_tab
+            fields:
+                - field: SumCategory    
+    - header: Description
+      fields:
+        - field: ObjDescription
+    - header: Source
+      fields:
+          - table:
+                tablename: AcqNameSourceRef_tab
+                fields:
+                  - field: SummaryData    
+    - header: Country
+      fields:
+        - field: LocCountry
+    - header: Province/State/Territory
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace                    
+    - header: Cultural Associations
+      rowend: " | "
+      fields:
+          - table:
+              tablename: culturalassociations
+              fields:
+                - field: ObjCulturalAssocRole_tab  
+                - string: ": "  
+                - field: SummaryData    
+    - header: Collector
+      fields:          
+        - multiple: LocCollectorsLocal_tab
+    - header: Date Collected
+      fields:
+        - field: PreDateCollected
+    - header: Date Acquired
+      fields:
+        - field: AcqAcquisitionDate
+    - header: Current Storage location
+      fields:
+        - field: LocCurrentLocationRef/SummaryData
+    - header: Permanent Storage location
+      fields:
+        - field: LocPermanentLocationRef/SummaryData
+    - header: Notes
+      fields:
+        - field: NotNotes
+    - header: Itemised notes
+      glue: " "
+      rowend: " | "
+      fields:
+        - table:
+            tablename: itemisednotes
+            fields:
+              - field: NotType
+              - field: NotText0        
+    - header: Other Numbers
+      glue: " "
+      rowend: " | "
+      fields:
+          - table:
+              tablename: othernumbers
+              fields:
+                - field: CatOtherNumbersSource
+                - field: CatOtherNumbersKind  
+                - field: CatOtherNumbersValue

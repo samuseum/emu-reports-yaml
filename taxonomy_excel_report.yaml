@@ -1,0 +1,81 @@
+# South Australian Museum report configuration
+---
+
+title: SAM Taxonomy Report
+columns:
+    - header: Class
+      fields:
+        - field: ClaClass
+    - header: Subclass
+      fields:
+        - field: ClaSubclass
+    - header: Superorder
+      fields:
+        - field: ClaSuperorder
+    - header: Order
+      fields:
+        - field: ClaOrder
+    - header: Suborder
+      fields:
+        - field: ClaSuborder
+    - header: Infraorder
+      fields:
+        - field: ClaInfraorder
+    - header: Superfamily
+      fields:
+        - field: ClaSuperfamily
+    - header: Family
+      fields:
+        - field: ClaFamily
+    - header: Subfamily
+      fields:
+        - field: ClaSubfamily
+    - header: Genus
+      fields:
+        - field: ClaGenus
+    - header: Subgenus
+      fields:
+        - field: ClaSubgenus
+    - header: Species
+      fields:
+        - field: ClaSpecies
+    - header: Subspecies
+      fields:
+        - field: ClaSubspecies
+    - header: Author String
+      fields:
+        - field: AutAuthorString
+    - header: Scientific Name
+      fields:
+        - field: ClaScientificName[not(parent::ClaCurrentNameRef) and not(parent::RanParentRef)]
+    - header: Currently Accepted?
+      fields:
+        - field: ClaCurrentlyAccepted
+    - header: Current Name
+      fields:
+        - conditional:
+            condition: /text() = 'No'
+            target: ClaCurrentlyAccepted
+            fields:
+              - field: ClaCurrentNameRef/ClaScientificName
+    - header: Common Name
+      fields:
+        - multiple: ComName_tab
+    - header: Occurrence Status (Australia)
+      fields:
+        - field: GeoOccurrenceStatus_tab
+    - header: Occurrence Status (South Australia)
+      fields:
+        - field: GeoOccurrenceStatusType_tab
+    - header: Rank
+      fields:
+        - field: ClaRank
+    - header: Parent Taxon
+      fields:
+        - field: RanParentRef/ClaScientificName
+    - header: Parent irn
+      fields:
+        - field: RanParentRef/irn
+    - header: EMu irn
+      fields:
+        - field: irn[not(parent::RanParentRef)]

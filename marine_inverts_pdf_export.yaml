@@ -1,0 +1,124 @@
+# South Australian Museum report configuration
+---
+
+title: Marine Invertebrates Monthly Registration Report
+totalstring: Total specimens databased this month
+columns:
+    - header: Registration Number
+      glue: " "
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: /text()
+              target: CatSuffix
+              fields:
+                  - string: "."
+                  - field: CatSuffix
+          - conditional:
+               condition: /text()
+               target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
+               fields:
+                   - string: "<i>"
+          - field: tuple[1]/ClaGenus
+          - field: tuple[1]/ClaSpecies
+          - field: tuple[1]/ClaSubspecies
+          - conditional:
+               condition: /text()
+               target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
+               fields:
+                   - string: "</i>"
+    - header: Collection Details
+      glue: ", "
+      fields:
+          - field: BioEventRef/SummaryData
+          - conditional:
+                condition: /text()
+                target: "MarDepthFromMet | MarDepthToMet | BioEventRef/AquDepthFromMet | BioEventRef/AquDepthToMet"
+                glue: ""
+                fields:
+                    - conditional:
+                        condition: /text()
+                        target: "MarDepthFromMet | MarDepthToMet"
+                        fields:
+                            - range:
+                                lower: MarDepthFromMet
+                                higher: MarDepthToMet
+                        otherwise:
+                          fields:
+                            - range: 
+                                lower: AquDepthFromMet
+                                higher: AquDepthToMet
+                    - string: "m"
+          - field: MarCollectionNotes
+          - field: MarHabitat
+          - field: MarLiveObservation
+          - field: ColCollectionMethod
+          - field: LocSamplingMethod
+          - table:
+                tablename: othernumbers
+                glue: " "
+                rowend: " "
+                fields:
+                    - field: CatOtherNumbersSource
+                    - field: CatOtherNumbersType
+                    - field: CatOtherNumbersValue
+          - field: PreDateCollected
+    - header: Taxon
+      glue: " "
+      fields:
+          - string: <b>family:</b>
+          - field: "tuple[1]/ClaFamily"
+          - string: <b>higher classification:</b>
+          - field: "tuple[1]/ClaPhylum"
+          - field: "tuple[1]/ClaSubphylum"
+          - field: "tuple[1]/ClaClass"
+    - header: Identifier
+      glue: " "
+      fields:
+          - conditional:
+              condition: "/*[text()]"
+              target: "SummaryData[ancestor::identification/tuple[1]]"
+              fields:
+                  - string: <b>identifier:</b>
+                  - field: "SummaryData[ancestor::identification/tuple[1]]"
+          - conditional:
+              condition: /text()
+              target: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+              fields:
+                  - string: <b>date identified:</b>
+                  - field: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+    - header: Collectors
+      glue: ", "
+      fields:
+          - table:
+              tablename: LocCollectorsRef_tab
+              fields:
+                  - field: "SummaryData[ancestor::LocCollectorsRef_tab]"
+    - header: ABTC No.
+      fields:
+          - field: "CatPrefix[ancestor::BioTissueRecordRef]"
+          - field: "CatRegNumber[ancestor::BioTissueRecordRef]"
+          - conditional:
+              condition: /text()
+              target: "CatSuffix[ancestor::BioTissueRecordRef]"
+              fields:
+                  - string: "."
+                  - field: "CatSuffix[ancestor::BioTissueRecordRef]"
+    - header: numbers
+      glue: " "
+      fields:
+           - conditional:
+               condition: /text()
+               target: CatSpecimenCount
+               fields:
+                   - string: "<b>specimen count: </b>"
+                   - field: CatSpecimenCount
+           - conditional:
+               condition: /text()
+               target: MarPhotoIndexNumber
+               fields:
+                   - string: Photo Index No.
+                   - field: MarPhotoIndexNumber
+           - string: "<b>irn:</b>"
+           - field: irn

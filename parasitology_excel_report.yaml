@@ -1,0 +1,44 @@
+# South Australian Museum report configuration
+---
+
+title: Parasitology report
+columns:
+    - header: Registration number
+      fields:
+        - field: CatPrefix
+        - field: CatRegNumber
+        - conditional:
+            condition: /text() != ''
+            target: CatSuffix
+            fields:
+                - string: "."
+                - field: CatSuffix
+    - header: Host identification
+      glue: " "
+      fields:
+        - field: HosTaxonRef_tab/tuple[1]/ClaGenus
+        - field: HosTaxonRef_tab/tuple[1]/ClaSpecies
+        - field: HosTaxonRef_tab/tuple[1]/ClaSubspecies
+    - header: Parasite Group
+      fields:
+        - field: ParParasiteGroup
+    - header: Parasite identification
+      glue: " "
+      fields:
+        - field: IdeCurrentTaxonRef/ClaGenus
+        - field: IdeCurrentTaxonRef/ClaSpecies
+        - field: IdeCurrentTaxonRef/ClaSubspecies
+    - header: Parasite ID comments
+      fields:
+        - field: IdeCurrentComments
+    - header: Type Status
+      glue: " "
+      rowend: " | "
+      fields:
+        - table:
+            tablename: typestatus
+            fields:
+              - field: CitTypeStatus
+              - string: of
+              - field: ClaGenus
+              - field: ClaSpecies

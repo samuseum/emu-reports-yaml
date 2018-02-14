@@ -1,0 +1,123 @@
+# South Australian Museum report configuration
+---
+
+title: Marine Invertebrates Label report
+columns:
+    - header: Registration Number
+      fields: 
+          - field: CatPrefix[not(ancestor::BioTissueRecordRef)]
+          - field: CatRegNumber[not(ancestor::BioTissueRecordRef)]
+          - conditional:
+              condition: /text()
+              target: CatSuffix[not(ancestor::BioTissueRecordRef)]
+              fields:
+                - string: "."
+                - field: CatSuffix[not(ancestor::BioTissueRecordRef)]    
+    - header: Barcode
+      fields:
+          - field: CatBarcode
+    - header: Specimen Count
+      fields:
+          - field: CatSpecimenCount
+    - header: Photo Index No.
+      fields:
+          - field: MarPhotoIndexNumber
+    - header: Collection Details
+      glue: ", "
+      fields:
+          - field: BioEventRef/SummaryData
+          - conditional:
+                condition: /text()
+                target: MarDepthFromMet
+                glue: " "    
+                fields:
+                    - range:
+                        lower: MarDepthFromMet
+                        higher: MarDepthToMet
+                    - string: "m"
+                otherwise:
+                    fields:
+                        - conditional:
+                            condition: /text()
+                            glue: " "    
+                            target: AquDepthFromMet 
+                            fields:    
+                                - range: 
+                                    lower: AquDepthFromMet
+                                    higher: AquDepthToMet
+                                - string: "m"
+          - field: MarCollectionNotes
+          - field: MarHabitat
+          - field: MarLiveObservation
+          - field: ColCollectionMethod
+          - field: LocSamplingMethod
+          - table:
+                tablename: OtherNumbers
+                glue: " "
+                rowend: " "
+                fields:
+                    - field: CatOtherNumbersSource
+                    - field: CatOtherNumbersType
+                    - field: CatOtherNumbersValue
+    - header: Taxon
+      glue: " "
+      fields:
+          - field: identification/tuple[1]/ClaGenus
+          - field: identification/tuple[1]/ClaSpecies
+          - field: identification/tuple[1]/ClaSubspecies
+    - header: Family
+      fields:
+          - field: identification/tuple[1]/ClaFamily
+    - header: Higher Classification
+      glue: " "
+      fields:
+          - field: identification/tuple[1]/ClaPhylum
+          - field: identification/tuple[1]/ClaSubphylum
+          - field: identification/tuple[1]/ClaClass
+    - header: Identified By
+      fields:
+          - field: identification/tuple[1]/SummaryData
+    - header: Date Identified
+      fields:
+          - field: identification/tuple[1]/IdeDateIdentified
+    - header: Collectors
+      glue: ", "
+      fields:
+          - table:
+              tablename: LocCollectorsRef_tab
+              fields:
+                  - field: SummaryData[ancestor::LocCollectorsRef_tab]
+    - header: Date Collected
+      fields:
+          - field: PreDateCollected
+    - header: ABTC No.
+      fields:
+          - conditional:
+              condition: /*[text()]
+              target: BioTissueRecordRef
+              fields:
+                - field: BioTissueRecordRef/CatPrefix
+                - field: BioTissueRecordRef/CatRegNumber
+                - conditional:
+                    condition: /text()
+                    target: BioTissueRecordRef/CatSuffix
+                    fields:
+                      - string: "."
+                      - field: BioTissueRecordRef/CatSuffix
+    - header: Type status
+      rowend: " | "
+      fields:
+        - table:
+            tablename: typestatusinfo
+            fields:
+              - field: CitTypeStatus    
+    - header: Type taxon
+      rowend: " | "
+      glue: " "
+      fields: 
+        - table:
+            tablename: typestatusinfo
+            fields:
+              - field: ClaGenus
+              - field: ClaSpecies
+              - field: ClaSubSpecies

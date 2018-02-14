@@ -1,0 +1,539 @@
+# South Australian Museum report configuration
+---
+
+title: SAM Tissues DWC CSV Export
+duplicate:
+    targettable: Tissue
+    indicator: CatSuffix
+columns:
+  - header: institutionCode
+    fields:
+      - string: SAMA
+  - header: basisOfRecord
+    fields:
+      - field: CatObjectType
+  - header: 'dcterms:type'
+    fields:
+      - conditional:
+          condition: /text() = 'HumanObservation'
+          target: CatObjectType
+          fields:
+            - string: Event
+          otherwise:
+            fields:
+              - string: PhysicalObject
+  - header: collectionCode
+    fields:
+      - field: CatCollectionName
+  - header: scientificName
+    fields:
+      - first: [IdeAcceptedSummaryDataLocal, IdeCurrentScientificNameLocal]
+  - header: acceptedNameUsage
+    fields:
+      - string: ''
+  - header: nameAccordingTo
+    fields:
+      - string: ''
+  - header: phylum
+    fields:
+      - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentPhylumLocal]
+  - header: class
+    fields:
+      - first: [IdeAcceptedRef/ClaClass, IdeCurrentClassLocal]
+  - header: order
+    fields:
+      - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+  - header: family
+    fields:
+      - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+  - header: genus
+    fields:
+      - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+  - header: specificEpithet
+    fields:
+      - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+  - header: infraspecificEpithet
+    fields:
+      - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+  - header: vernacularName
+    fields:
+      - string: ''
+  - header: verbatimTaxonRank
+    fields:
+      - string: ''
+  - header: identifiedBy
+    fields:
+      - field: IdentificationInfo/tuple[1]/SummaryData
+  - header: dateIdentified
+    fields:
+      - field: IdentificationInfo/tuple[1]/IdeDateIdentified
+  - header: identificationRemarks
+    fields:
+      - conditional:
+          condition: /text()
+          target: IdentificationInfo/tuple[1]/IdeConfidence
+          fields:
+            - string: 'Confidence: '
+            - field: IdentificationInfo/tuple[1]/IdeConfidence
+  - header: typeStatus
+    glue: " of "
+    rowend: " | "
+    fields:
+      - table:
+          tablename: TypeStatusInfo
+          fields:
+            - field: CitTypeStatus
+            - field: ClaScientificName
+  - header: datasetName
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: ExpExpeditionName[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: ExpExpeditionName[not(ancestor::SouVoucherHeldRef)]
+  - header: waterBody
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocOcean[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocOcean[not(ancestor::SouVoucherHeldRef)]
+  - header: country
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocCountry[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocCountry[not(ancestor::SouVoucherHeldRef)]
+  - header: stateProvince
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocProvinceStateTerritory[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocProvinceStateTerritory[not(ancestor::SouVoucherHeldRef)]
+  - header: county
+    fields:
+      - string: ''
+  - header: verbatimLocality
+    glue: " | "
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocTownship[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocTownship[not(ancestor::SouVoucherHeldRef)]
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocNearestNamedPlace[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocNearestNamedPlace[not(ancestor::SouVoucherHeldRef)]
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LocPreciseLocation[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LocPreciseLocation[not(ancestor::SouVoucherHeldRef)]
+  - header: decimalLatitude
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+  - header: verbatimLatitude
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LatPreferredCentroidLatitude[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LatPreferredCentroidLatitude[not(ancestor::SouVoucherHeldRef)]
+  - header: decimalLongitude
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LatPreferredCentroidLongDec[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LatPreferredCentroidLongDec[not(ancestor::SouVoucherHeldRef)]
+  - header: verbatimLongitude
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - field: LatPreferredCentroidLongitude[ancestor::SouVoucherHeldRef]
+              otherwise:
+                  fields:
+                      - field: LatPreferredCentroidLongitude[not(ancestor::SouVoucherHeldRef)]
+  - header: coordinatePrecision
+    fields:
+        - conditional:
+              condition:
+              target: SouVoucherHeldRef/BioEventRef
+              fields:
+                  - conditional:
+                      condition: /text()
+                      target: LatPreferredCentroidLatDec[1][ancestor::SouVoucherHeldRef]
+                      fields:
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 1]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.1'
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 2]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.01'
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 3]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.001'
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 4]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.0001'
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 5]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.00001'
+                        - conditional:
+                            condition: '[string-length(substring-after(., ".")) = 6]'
+                            target: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                            fields:
+                              - string: '0.000001'
+              otherwise:
+                  fields:
+                    - conditional:
+                        condition: /text()
+                        target: LatPreferredCentroidLatDec[1][not(ancestor::SouVoucherHeldRef)]
+                        fields:
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 1]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.1'
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 2]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.01'
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 3]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.001'
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 4]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.0001'
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 5]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.00001'
+                          - conditional:
+                              condition: '[string-length(substring-after(., ".")) = 6]'
+                              target: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+                              fields:
+                                - string: '0.000001'
+  - header: verbatimCoordinateSystem
+    fields:
+      - string: ''
+  - header: locationRemarks
+    fields:
+      - string: ''
+  - header: eventID
+    fields:
+      - string: 'urn:emu.sam.sa.gov.au:Event:'
+      - conditional:
+            condition:
+            target: SouVoucherHeldRef/BioEventRef
+            fields:
+                - field: SouVoucherHeldRef/BioEventRef/irn
+            otherwise:
+                fields:
+                    - field: BioEventRef/irn[not(ancestor::SouVoucherHeldRef)]
+  - header: eventDate
+    fields:
+      - conditional:
+            condition: "/text()!=''"
+            target: SouVoucherHeldRef/PreDateCollected
+            fields:
+                - field: SouVoucherHeldRef/PreDateCollected
+            otherwise:
+                fields:
+                  - conditional:
+                      condition: "/text()!=''"
+                      target: PreDateCollected[not(ancestor::SouVoucherHeldRef)]
+                      fields:
+                        - field: PreDateCollected[not(ancestor::SouVoucherHeldRef)]
+                      otherwise:
+                        fields:
+                          - range:
+                              lower: ColDateVisitedFrom
+                              higher: ColDateVisitedTo
+  - header: verbatimEventDate
+    glue: " "
+    fields:
+      - field: PreVerbatimDateCollected
+  - header: eventTime
+    fields:
+      - conditional:
+          condition:
+          target: SouVoucherHeldRef/BioEventRef/ColTimeVisitedFrom
+          fields:
+            - field: SouVoucherHeldRef/BioEventRef/ColTimeVisitedFrom
+          otherwise:
+            fields:
+              - field: ColTimeVisitedFrom[not(ancestor::SouVoucherHeldRef)]
+  - header: eventRemarks
+    fields:
+      - string: ''
+  - header: 'dcterms:modified'
+    fields:
+      - field: AdmDateModified
+  - header: samplingProtocol
+    glue: " | "
+    fields:
+        - conditional:
+            condition: /text()
+            target: SouVoucherHeldRef/BioEventRef/LocSamplingMethod
+            fields:
+              - field: LocSamplingMethod[ancestor::SouVoucherHeldRef]
+            otherwise:
+              fields:
+                - field: LocSamplingMethod[not(ancestor::SouVoucherHeldRef)]
+        - conditional:
+            condition: /text()
+            target: SouVoucherHeldRef/BioEventRef/ColCollectionMethod
+            fields:
+              - field: ColCollectionMethod[ancestor::SouVoucherHeldRef]
+            otherwise:
+              fields:
+                - field: ColCollectionMethod[not(ancestor::SouVoucherHeldRef)]
+  - header: habitat
+    fields:
+      - field: BioMicrohabitatDescription
+  - header: occurrenceID
+    fields:
+      - string: ''
+  - header: catalogNumber
+    fields:
+      - field: CatPrefix[not(ancestor::SouVoucherHeldRef)]
+      - field: CatRegNumber[not(ancestor::SouVoucherHeldRef)]
+      - conditional:
+          condition: /text()
+          target: CatSuffix[not(ancestor::SouVoucherHeldRef)]
+          fields:
+            - string: '.'
+            - field: CatSuffix[not(ancestor::SouVoucherHeldRef)]
+  - header: occurrenceRemarks
+    glue: " "
+    fields:
+      - table:
+          tablename: ItemisedNote
+          fields:
+            - conditional:
+                condition: "/text() = 'OccurrenceRemarks for ALA'"
+                target: NotType
+                fields:
+                  - field: NotText
+  - header: recordedBy
+    glue: " "
+    rowend: ", "
+    fields:
+      - multiple: LocCollectorsLocal
+  - header: individualCount
+    fields:
+      - conditional:
+          condition: /text()
+          target: CatSpecimenCount
+          fields:
+            - field: CatSpecimenCount
+          otherwise:
+            fields:
+              - conditional:
+                  condition:
+                  target: SexStageInfo/tuple/ZooSexStageCount
+                  fields:
+                    - xpath: "sum((//ZooSexStageCount)[number(.) = .])"
+  - header: recordNumber
+    rowend: "|"
+    fields:
+      - table:
+          tablename: othernumbers
+          fields:
+            - conditional:
+                condition: "[starts-with(.,'Field N')]"
+                target: CatOtherNumbersType
+                fields:
+                  - field: CatOtherNumbersValue
+  - header: otherCatalogNumbers
+    fields:
+      - string: 'ecatalogue.irn:'
+      - field: 'irn[not (parent::BioEventRef)]'
+  - header: sex
+    rowend: "|"
+    fields:
+      - table:
+          tablename: SexStageInfo
+          fields:
+            - field: ZooSex
+  - header: lifeStage
+    rowend: "|"
+    fields:
+      - table:
+          tablename: SexStageInfo
+          fields:
+            - field: ZooStage
+  - header: preparations
+    fields:
+      - field: CatObjectForm
+  - header: associatedSequences
+    fields:
+      - string: ''
+  - header: principalRecord
+    fields:
+      - string: ''
+  - header: coordinateUncertaintyInMeters
+    glue: " "
+    fields:
+      - multiple: LatRadiusNumeric
+  - header: minimumDepthInMeters
+    fields:
+      - conditional:
+          condition: "/text() != ''"
+          target: MarDepthFromMet
+          fields:
+            - field: MarDepthFromMet
+          otherwise:
+            fields:
+              - multiple: AquDepthFromMet
+  - header: maximumDepthInMeters
+    fields:
+      - conditional:
+          condition: "/text()!=''"
+          target: MarDepthtoMet
+          fields:
+            - field: MarDepthtoMet
+          otherwise:
+            fields:
+              - field: AquDepthtoMet
+  - header: associatedTaxa
+    fields:
+      - conditional:
+          condition: "/text()!=''"
+          target: HostInfo/tuple[1]
+          fields:
+            - string: 'Host: '
+            - field: 'Hostinfo/tuple[1]/ClaScientificName'
+  - header: recordedBy
+    fields:
+        - conditional:
+              condition: "/tuple/*[text()]"
+              target: LocCollectorsRef_tab[ancestor::SouVoucherHeldRef]
+              fields:
+                  - table:
+                      tablename: LocCollectorsRef_tab[ancestor::SouVoucherHeldRef]
+                      rowend: ", "
+                      fields:
+                        - field: SummaryData
+              otherwise:
+                  fields:
+                      - table:
+                            tablename: LocCollectorsRef_tab[not(ancestor::SouVoucherHeldRef)]
+                            rowend: ", "
+                            fields:
+                              - field: SummaryData
+  - header: ggbn:preparationType
+    fields:
+        - field: TisTissue
+  - header: ggbn:preservationType
+    fields:
+        - field: TisStorageMedium
+  - header: ggbn:preservationTemperature
+    fields:
+        - conditional:
+            condition: "[starts-with(.,'Frozen')]"
+            target: TisStorageMedium
+            fields:
+              - string: -70 degrees Celsius
+        - conditional:
+            condition: "[starts-with(.,'Ethanol')]"
+            target: TisStorageMedium
+            fields:
+              - string: "Room temperature"
+  - header: ggbn:disposition
+    fields:
+      - conditional:
+          condition: "/text() != ''"
+          target: TisTissueDisposition
+          fields:
+            - field: TisTissueDisposition
+          otherwise:
+            fields:
+              - string: "in collection"
+  - header: ggbn:blocked
+    fields:
+      - conditional:
+          condition: "/text() != ''"
+          target: TisSampleEmbargoed
+          fields:
+            - field: TisSampleEmbargoed
+          otherwise:
+            fields:
+              - string: "no"
+  - header: ggbn:blockedUntil
+    fields:
+      - field: TisEmbargoedUntilDate
+  - header: relatedResourceCatalogNumber
+    glue: ":"
+    fields:
+      - field: SouInstitutionCode
+      - field: SouCollectionCode
+      - field: SouRegistrationNumber
+  - header: relationshipofResource
+    fields:
+      - conditional:
+          condition: "/text() !='No'"
+          target: SouVoucherExtant
+          fields:
+            - conditional:
+                condition: "/text() !=''"
+                target: SouInstitutionCode
+                fields:
+                  - string: "same individual"

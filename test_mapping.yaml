@@ -1,0 +1,150 @@
+# South Australian Museum report configuration
+---
+
+title: SAM Entomology
+columns:
+    - header: Registration Number
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: "/text() != ''"
+              target: CatSuffix
+              fields:
+                  - string: ""
+                  - field: CatSuffix
+    - header: Prefix
+      fields:
+          - conditional:
+                condition: /text()
+                target: "MarDepthFromMet | MarDepthToMet | BioEventRef/AquDepthFrom | BioEventRef/AquDepthTo"
+                glue: ""
+                fields:
+                    - conditional:
+                        condition: /text()
+                        target: "MarDepthFromMet | MarDepthToMet"
+                        fields:
+                            - range:
+                                lower: MarDepthFromMet
+                                higher: MarDepthToMet
+                        otherwise:
+                            fields: 
+                              - range:
+                                 lower: MarDepthFromMet
+                                 higher: MarDepthToMet
+
+
+    - header: Regno
+      fields: 
+        - field: CatRegNumber
+    - header: Suffix
+      fields:
+        - field: CatSuffix
+    - header: Old Reg Number
+      fields:
+        - field: CatOldRegNumber
+    - header: Transcription from label
+      fields:
+        - field: EntLabelTranscription
+    - header: Other Numbers
+      glue: " "
+      rowend: " "
+      fields:
+        - table:
+            tablename: othernumbers
+            fields:
+              - field: CatOtherNumbersValue
+    - header: Specimen count
+      fields:
+        - field: CatSpecimenCount
+    - header: Specimen count modifier
+      fields:
+        - field: CatSpecimenCountModifier
+    - header: Object form
+      fields:
+        - field: CatObjectform
+    - header: Date catalogued
+      fields:
+        - field: CatDateCatalogued
+    - header: Order
+      fields:
+        - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+    - header: Family
+      fields:
+        - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+    - header: Genus
+      fields:
+        - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+    - header: Species
+      fields:
+        - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+    - header: Subspecies
+      fields:
+        - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+    - header: Type status
+      glue: " of "
+      rowend: "|"
+      fields:
+        - table:
+            tablename: typeinfo
+            fields:
+              - field: CitTypeStatus
+              - field: ClaScientificName
+    - header: Expedition Name
+      fields:
+        - field: ExpExpeditionName
+    - header: Site Code
+      fields:
+        - field: ColCollectionEventCode
+    - header: Collection Method
+      fields:
+        - first: [ColCollectionMethod, LocSamplingMethod]
+    - header: State
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace
+    - header: Special Geographic Unit
+      fields:
+        - field: LocSpecialGeographicUnit
+    - header: Precise Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Latitude (Decimal)
+      fields:
+        - field: LatPreferredCentroidLatDec
+    - header: Longitude (Decimal)
+      fields:
+        - field: LatPreferredCentroidLongDec
+    - header: Determination
+      fields:
+        - field: LatPreferredDetermination
+    - header: Coordinate uncertainty (m)
+      fields:
+        - field: LatRadiusNumberic_tab
+    - header: Date Visited from
+      fields:
+        - field: ColDateVisitedFrom
+    - header: Date Visited to
+      fields:
+      - field: ColDateVisitedTo
+    - header: Date collected
+      fields:
+          - field: PreDateCollected
+    - header: Collectors
+      glue: ", "
+      fields:
+        - table:
+            tablename: LocCollectorsLocal_tab
+            fields:
+              - field: LocCollectorsLocal
+    - header: Tissue Type
+      fields:
+        - field: BioTissueType
+    - header: ABTC Record
+      fields:
+        - field: BioTissueRecordRef/SummaryData
+    - header: Notes
+      fields:
+        - field: NotNotes

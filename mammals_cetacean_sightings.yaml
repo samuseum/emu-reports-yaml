@@ -1,0 +1,268 @@
+# Mammalogy cetacean sightings
+---
+
+title: Mammalogy Cetacean sightings report
+columns:
+    - header: Prefix
+      fields:
+        - field: CatPrefix
+    - header: Reg Number
+      fields:
+        - field: CatRegNumber
+    - header: Suffix
+      fields:
+        - field: CatSuffix
+    - header: Registered by
+      fields:
+        - field: CatCataloguedByRef/SummaryData
+    - header: Date Registered
+      fields:
+        - field: CatDateCatalogued
+    - header: Other Numbers
+      glue: ", "
+      fields:
+        - multiple: CatOtherNumbersValue
+    - header: Family
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaFamily
+                  fields:
+                    - field: ClaFamily
+                  otherwise:
+                    fields:
+                      - string: "Family"
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentFamilyLocal
+                    fields:
+                      - field: IdeCurrentFamilyLocal
+                    otherwise:
+                      fields:
+                        - string: "Family"
+    - header: Genus
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaGenus
+                  fields:
+                    - field: ClaGenus
+                  otherwise:
+                    fields:
+                     - string: "Gen."
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentGenusLocal
+                    fields:
+                      - field: IdeCurrentGenusLocal
+                    otherwise:
+                      fields:
+                        - string: "Gen."
+    - header: Species
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaSpecies
+                  fields:
+                    - field: ClaSpecies
+                  otherwise:
+                    fields:
+                      - string: "sp."
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentSpeciesLocal
+                    fields:
+                      - field: IdeCurrentSpeciesLocal
+                    otherwise:
+                      fields:
+                        - string: "sp."
+    - header: ID Confidence
+      fields:
+        - field: IdeCurrentConfidence
+    - header: ID Comments
+      fields:
+        - field: IdeCurrentComments
+    - header: Identified by
+      fields:
+        - field: IdeCurrentIdentifiedByLocal
+    - header: Date Identified
+      fields:
+        - field: IdeCurrentDateIdentified
+    - header: Latitude (DMS)
+      fields:
+        - field: tuple[1]/LatLatitude
+    - header: Longitude (DMS)
+      fields:
+        - field: tuple[1]/LatLongitude
+    - header: Latitude Dec
+      fields:
+        - field: tuple[1]/LatLatitudeDecimal
+    - header: Longitude Dec
+      fields:
+        - field: tuple[1]/LatLongitudeDecimal
+    - header: Precision
+      fields:
+        - field: tuple[1]/LatRadiusVerbatim
+    - header: Datum
+      fields:
+        - field: LatDatum_tab[1]
+    - header: Country
+      fields:
+        - field: LocCountry
+    - header: Province/State/Territory
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace
+    - header: Precise Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Special Geographic Unit
+      fields:
+        - field: LocSpecialGeographicUnit
+    - header: Ocean
+      fields:
+        - field: LocOcean
+    - header: Observed By
+      fields:
+        - field: SigObservedByRef/SummaryData
+    - header: Reported By
+      fields:
+        - field: SigReportedByRef/SummaryData
+    - header: Date Observed
+      fields:
+        - field: SigDateObserved
+    - header: Date Observed Verbatim
+      fields:
+        - field: SigDateObservedVerbatim
+    - header: Time Observed
+      fields:
+        - field: SigTimeObserved
+    - header: Time Observed Verbatim
+      fields:
+        - field: SigTimeObservedVerbatim
+    - header: Date Reported
+      fields:
+        - field: SigDateReported
+    - header: Date Reported Verbatim
+      fields:
+        - field: SigDateReportedVerbatim
+    - header: Distance and direction from Observer
+      fields:
+        - field: SigDisDirFromObserver
+    - header: Distance and Direction from Shore
+      fields:
+        - field: SigDisDirFromShore
+    - header: How Observed
+      fields:
+        - field: SigHowObserved
+    - header: Comments
+      fields:
+        - field: SigObservationComments
+    - header: Weather
+      fields:
+        - field: SigWeather
+    - header: Sea Conditions
+      fields:
+        - field: SigSeaConditions
+    - header: Survey Name
+      fields:
+        - field: SigSurveyName
+    - header: Survey Type
+      fields:
+        - field: SigSurveyType
+    - header: Survey Platform
+      fields:
+        - field: SigSurveyPlatform
+    - header: Survey Comments
+      fields:
+        - field: SigSurveyComments
+    - header: Max. Total Number Observed
+      fields:
+        - field: SigTotalNumberObserved
+    - header: Number of Young
+      fields:
+        - field: SigNumberOfYoung
+    - header: Identified Individuals
+      fields:
+        - field: SigIdentifiedIndividuals
+    - header: Number/Size Comments
+      fields:
+        - field: SigNumberSizeComments
+    - header: Head Shape
+      fields:
+        - field: SigHeadShape
+    - header: Head Other Features
+      fields:
+        - field: SigHeadOtherFeatures
+    - header: Blow Height
+      fields:
+        - field: SigBlowHeight
+    - header: Blow Type
+      fields:
+        - field: SigBlowType
+    - header: Flipper Size
+      fields:
+        - field: SigFlipperSize
+    - header: Flipper Shape
+      fields:
+        - field: SigFlipperShape
+    - header: Fluke Trailing Edge
+      fields:
+        - field: SigFlukeTrailingEdge
+    - header: Fluke Notch
+      fields:
+        - field: SigFlukeNotch
+    - header: Dorsal Fin Size
+      fields:
+        - field: SigDorsalFinSize
+    - header: Dorsal Fin Shape
+      fields:
+        - field: SigDorsalFinShape
+    - header: Dorsal Fin Position
+      fields:
+        - field: SigDorsalFinPosition
+    - header: Description Comments
+      fields:
+        - field: SigDescriptionComments
+    - header: Social Group
+      fields:
+        - field: SigSocialGroup
+    - header: Images
+      fields:
+        - field: SigImages
+    - header: Images Attached
+      fields:
+        - field: SigImagesAttached
+    - header: Behaviour
+      fields:
+        - field: SigBehaviour
+    - header: Multimedia
+      glue: " | "
+      fields:
+        - multiple: MulTitle
+    - header: Notes
+      fields:
+        - field: NotNotes
+    - header: Itemised Notes
+      fields:
+        - field: NotText0

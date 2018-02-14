@@ -1,0 +1,404 @@
+# Mammalogy cetaceans
+---
+
+title: Mammalogy Cetaceans report
+columns:
+    - header: Prefix
+      fields:
+        - field: CatPrefix
+    - header: Reg Number
+      fields:
+        - field: CatRegNumber
+    - header: Suffix
+      fields:
+        - field: CatSuffix
+    - header: Preceeding Numbers
+      fields:
+        - field: AcqPrecedingNumbers
+    - header: Other Numbers
+      glue: ", "
+      fields:
+        - multiple: CatOtherNumbersValue
+    - header: Date Catalogued
+      fields:
+        - field: CatDateCatalogued
+    - header: Catalogued by
+      fields:
+        - field: CatCataloguedByRef/SummaryData
+    - header: Form of Object
+      fields:
+        - field: CatObjectForm
+    - header: Kind of Object
+      fields:
+        - field: CatObjectType
+    - header: Family
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaFamily
+                  fields:
+                    - field: ClaFamily
+                  otherwise:
+                    fields:
+                      - string: "Family"
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentFamilyLocal
+                    fields:
+                      - field: IdeCurrentFamilyLocal
+                    otherwise:
+                      fields:
+                        - string: "Family"
+    - header: Genus
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaGenus
+                  fields:
+                    - field: ClaGenus
+                  otherwise:
+                    fields:
+                     - string: "Gen."
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentGenusLocal
+                    fields:
+                      - field: IdeCurrentGenusLocal
+                    otherwise:
+                      fields:
+                        - string: "Gen."
+    - header: Species
+      fields:
+        - conditional:
+            condition: "/*[text()]"
+            target: IdeAcceptedRef
+            fields:
+              - conditional:
+                  condition: "/text()"
+                  target: ClaSpecies
+                  fields:
+                    - field: ClaSpecies
+                  otherwise:
+                    fields:
+                      - string: "sp."
+            otherwise:
+              fields:
+                - conditional:
+                    condition: "/text()"
+                    target: IdeCurrentSpeciesLocal
+                    fields:
+                      - field: IdeCurrentSpeciesLocal
+                    otherwise:
+                      fields:
+                        - string: "sp."
+    - header: Subspecies
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaSubspecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSubspeciesLocal
+    - header: Type Status
+      rowend: "|"
+      glue: " of "
+      fields:
+        - table:
+            tablename: TypeStatus
+            fields:
+              - field: CitTypeStatus
+              - field: ClaScientificName
+    - header: ID Confidence
+      fields:
+        - field: IdeCurrentConfidence
+    - header: Identified by
+      fields:
+        - field: IdeCurrentIdentifiedByLocal
+    - header: Date Identified
+      fields:
+        - field: IdeCurrentDateIdentified
+    - header: ID Comments
+      fields:
+        - field: IdeCurrentComments
+    - header: ID Current
+      fields:
+        - field: IdeCurrentCurrent
+    - header: Date Collected
+      fields:
+        - field: PreDateCollected
+    - header: Origin Of Specimen
+      fields:
+        - field: LocOriginOfSpecimen
+    - header: Age Of Material
+      fields:
+        - field: MamAgeOfMaterial
+    - header: Collector
+      fields:
+        - field: LocCollectorsLocal_tab
+    - header: Expedition Name
+      fields:
+        - field: ExpExpeditionName
+    - header: Site Code
+      fields:
+        - field: ColCollectionEventCode
+    - header: Latitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLatitude
+    - header: Latitude Dec
+      fields:
+        - field: LatPreferredCentroidLatDec
+    - header: Longitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLongitude
+    - header: Longitude Dec
+      fields:
+        - field: LatPreferredCentroidLongDec
+    - header: Precision
+      fields:
+        - field: LatPreferredRadiusVerbatim
+    - header: Determination
+      fields:
+        - field: LatLatLongDetermination_tab[1]
+    - header: Datum
+      fields:
+        - field: LatDatum_tab[1]
+    - header: Other Datum
+      fields:
+        - field: MapOtherDatum_tab[1]
+    - header: Country
+      fields:
+        - field: LocCountry
+    - header: Province/State/Territory
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace
+    - header: Special Geographic Unit
+      fields:
+        - field: LocSpecialGeographicUnit
+    - header: Ocean
+      fields:
+        - field: LocOcean
+    - header: Tissues Collected
+      fields:
+        - field: BioTissueType
+    - header: Preservative
+      fields:
+        - field: ZooPreservative
+    - header: Fixative
+      fields:
+        - field: ZooFixative
+    - header: How Acquired
+      fields:
+        - field: AcqHowAcquired
+    - header: Acquisition Date
+      fields:
+        - field: AcqAcquisitionDate
+    - header: Name of Source
+      rowend: ", "
+      fields:
+        - table:
+            tablename: AcqNameSourceRef_tab
+            fields:
+              - field: SummaryData
+    - header: Current Location
+      fields:
+        - field: LocCurrentLocationRef/SummaryData
+    - header: Permanent Location
+      fields:
+        - field: LocPermanentLocationRef/SummaryData
+    - header: Method Of Capture
+      fields:
+        - field: MamMethodOfCapture
+    - header: Date First Seen
+      fields:
+        - field: MamDateFirstSeen
+    - header: Seen by
+      fields:
+        - field: MamDateFirstSeenByRef/SummaryData
+    - header: Date Reported
+      fields:
+        - field: MamDateReported
+    - header: Reported by
+      fields:
+        - field: MamDateReportedByRef/SummaryData
+    - header: Seen Alive
+      fields:
+        - field: MamSeenAlive
+    - header: Stranding Weather
+      fields:
+        - field: MamStrandingWeather
+    - header: Stranding Circumstances
+      fields:
+        - field: MamStrandingCircumstances
+    - header: Total Number Stranded
+      fields:
+        - field: MamAnimalNumber
+    - header: Number Male
+      fields:
+        - field: MamAnimalNumberMale
+    - header: Number Female
+      fields:
+        - field: MamAnimalNumberFemale
+    - header: X-Rayed
+      fields:
+        - field: MinXRayed
+    - header: Photos
+      fields:
+        - field: MamPhoto
+    - header: Pathology Report
+      fields:
+        - field: MamPathologyReport
+    - header: Parasites External
+      fields:
+        - field: MamParasitesExternal
+    - header: Parasites Internal
+      fields:
+        - field: MamParasitesInternal
+    - header: Organs Collected
+      fields:
+        - field: MamOrgansCollected
+    - header: Baleen
+      fields:
+        - field: MamBaleen
+    - header: Colour Alive Above
+      fields:
+        - field: MamColourAliveAbove
+    - header: Colour Alive Below
+      fields:
+        - field: MamColourAliveBelow
+    - header: Colour Dead Above
+      fields:
+        - field: MamColourDeadAbove
+    - header: Colour Dead Below
+      fields:
+        - field: MamColourDeadBelow
+    - header: Mammal Age
+      fields:
+        - field: MamMammalAge
+    - header: Sex
+      fields:
+        - field: MamSex
+    - header: Reproductive Condition
+      fields:
+        - field: MamReproductiveCondition
+    - header: Weight
+      fields:
+        - field: BirWeight
+    - header: Weight Unit
+      fields:
+        - field: MamMammalWeightUnit
+    - header: Weight Age Comments
+      fields:
+        - field: MamWeightAgeComments
+    - header: Total Length
+      fields:
+        - field: MamCetacean1
+    - header: Tip to Centre of Eye
+      fields:
+        - field: MamCetacean2
+    - header: Length of Gape
+      fields:
+        - field: MamCetacean3
+    - header: Tip to Blowhole
+      fields:
+        - field: MamCetacean4
+    - header: Tip to Anterior Insert of Flipper
+      fields:
+        - field: MamCetacean5
+    - header: Tip to Tip of Dorsal Fin
+      fields:
+        - field: MamCetacean6
+    - header: Tip to Center of Anus
+      fields:
+        - field: MamCetacean7
+    - header: Max. Girth
+      fields:
+        - field: MamCetacean8
+    - header: Length of Flipper
+      fields:
+        - field: MamCetacean9
+    - header: Width of Flipper
+      fields:
+        - field: MamCetacean10
+    - header: Width of Tail Flukes
+      fields:
+        - field: MamCetacean11
+    - header: Depth of Notch
+      fields:
+        - field: MamCetacean12
+    - header: Height of Dorsal Fin
+      fields:
+        - field: MamCetacean13
+    - header: Measurement Units
+      fields:
+        - field: MamCetaceanUnits
+    - header: Dorsal Blubber Thickness
+      fields:
+        - field: MamDorsal
+    - header: Ventral Blubber Thickness
+      fields:
+        - field: MamVentral
+    - header: Blubber Measurement Units
+      fields:
+        - field: MamBlubberThicknessUnit
+    - header: Upper Left Tooth Count
+      fields:
+        - field: MamUpperLeftToothCount
+    - header: Upper Right Tooth Count
+      fields:
+        - field: MamUpperRightToothCount
+    - header: Lower Left Tooth Count
+      fields:
+        - field: MamLowerLeftToothCount
+    - header: Lower Right Tooth Count
+      fields:
+        - field: MamLowerRightToothCount
+    - header: Throat Grooves
+      fields:
+        - field: MamThroatGrooves
+    - header: Decomposition
+      fields:
+        - field: MamDecomposition
+    - header: Geraci Code
+      fields:
+        - field: MamGeraciCode
+    - header: Injuries
+      fields:
+        - field: MamInjuries
+    - header: Scars
+      fields:
+        - field: MamScars
+    - header: Dissection Remarks
+      fields:
+        - field: MamDissectionRemarks
+    - header: Stomach Contents
+      fields:
+        - field: ZooStomachContents
+    - header: Habitat Description
+      fields:
+        - field: AquHabitatDescription
+    - header: Notes
+      fields:
+        - field: NotNotes
+    - header: Cetacean Notes
+      fields:
+        - field: NotText0

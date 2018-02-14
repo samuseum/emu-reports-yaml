@@ -1,0 +1,117 @@
+# South Australian Museum report configuration
+---
+
+title: Herpetology report
+columns:
+    - header: Registration Number
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: /text() != ''
+              target: CatSuffix
+              fields:
+                  - string: "."
+                  - field: CatSuffix
+    - header: Other Numbers
+      fields:
+        - table:
+            tablename: OtherNumbers
+            glue: " "
+            rowend: " "
+            fields:
+                - field: CatOtherNumbersSource
+                - field: CatOtherNumbersType
+                - field: CatOtherNumbersValue
+    - header: Valid Record
+      fields:
+        - field: CatValidRecord
+    - header: Family
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaFamily
+            otherwise:
+              fields:
+                - field: IdeCurrentFamilyLocal
+    - header: Genus
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaGenus
+            otherwise:
+              fields:
+                - field: IdeCurrentGenusLocal
+    - header: Species
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: IdeAcceptedRef/ClaSpecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSpeciesLocal
+    - header: Subspecies
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaSubspecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSubspeciesLocal
+    - header: Collection Date
+      fields:
+        - field: PreDateCollected
+    - header: Country
+      fields:
+        - field: LocCountry
+    - header: State
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace
+    - header: Precise Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Latitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLatitude
+    - header: Longitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLongitude
+    - header: Latitude (Decimal)
+      fields:
+        - field: LatPreferredCentroidLatDec
+    - header: Longitude (Decimal)
+      fields:
+        - field: LatPreferredCentroidLongDec
+    - header: Collector
+      glue: "; "
+      fields:
+        - multiple: LocCollectorsRef_tab/tuple/SummaryData
+    - header: Notes
+      fields:
+        - field: NotNotes
+    - header: Itemised Notes
+      glue: ": "
+      rowend: "\n"
+      fields:
+        - table:
+            tablename: ItemisedNotes
+            fields:
+              - field: NotType
+              - field: NotText
+    - header: Location
+      fields:
+        - field: LocPermanentLocationRef/SummaryData
+    - header: ABTC Number
+      fields:
+        - field: BioTissueRecordRef/SummaryData

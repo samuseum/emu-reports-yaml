@@ -1,0 +1,399 @@
+# South Australian Museum Darwin Core exporter for the Atlas of Living Australia
+---
+
+title: SAM DWC CSV Export
+columns:
+  - header: institutionCode
+    fields:
+      - string: SAMA
+  - header: basisOfRecord
+    fields:
+      - field: CatObjectType
+  - header: 'dcterms:type'
+    fields:
+      - conditional:
+          condition: /text() = 'HumanObservation'
+          target: CatObjectType
+          fields:
+            - string: Event
+          otherwise:
+            fields:
+              - string: PhysicalObject
+  - header: collectionCode
+    fields:
+      - field: CatCollectionName
+  - header: scientificName
+    fields:
+      - first: [IdeAcceptedSummaryDataLocal, IdeCurrentScientificNameLocal]
+  - header: acceptedNameUsage
+    fields:
+      - string: ''
+  - header: nameAccordingTo
+    fields:
+      - string: ''
+  - header: phylum
+    fields:
+      - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentPhylumLocal]
+  - header: class
+    fields:
+      - first: [IdeAcceptedRef/ClaClass, IdeCurrentClassLocal]
+  - header: order
+    fields:
+      - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+  - header: family
+    fields:
+      - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+  - header: genus
+    fields:
+      - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+  - header: specificEpithet
+    fields:
+      - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+  - header: infraspecificEpithet
+    fields:
+      - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+  - header: vernacularName
+    fields:
+      - string: ''
+  - header: verbatimTaxonRank
+    fields:
+      - string: ''
+  - header: identifiedBy
+    fields:
+      - field: IdentificationInfo/tuple[1]/SummaryData
+  - header: dateIdentified
+    fields:
+      - field: IdentificationInfo/tuple[1]/IdeDateIdentified
+  - header: identificationRemarks
+    fields:
+      - conditional:
+          condition: /text()
+          target: IdentificationInfo/tuple[1]/IdeConfidence
+          fields:
+            - string: 'Confidence: '
+            - field: IdentificationInfo/tuple[1]/IdeConfidence
+  - header: typeStatus
+    glue: " of "
+    rowend: " | "
+    fields:
+      - table:
+          tablename: TypeStatusInfo
+          fields:
+            - field: CitTypeStatus
+            - field: ClaScientificName
+  - header: datasetName
+    fields:
+      - field: ExpExpeditionName
+  - header: waterBody
+    fields:
+      - field: LocOcean
+  - header: country
+    fields:
+      - field: LocCountry
+  - header: stateProvince
+    fields:
+      - field: LocProvinceStateTerritory
+  - header: county
+    fields:
+      - string: ''
+  - header: verbatimLocality
+    glue: " | "
+    fields:
+      - field: LocTownship
+      - field: LocNearestNamedPlace
+      - field: LocPreciseLocation
+  - header: decimalLatitude
+    fields:
+      - field: LatPreferredCentroidLatDec
+  - header: verbatimLatitude
+    fields:
+      - field: LatPreferredCentroidLatitude
+  - header: decimalLongitude
+    fields:
+      - field: LatPreferredCentroidLongDec
+  - header: verbatimLongitude
+    fields:
+      - field: LatPreferredCentroidLongitude
+  - header: coordinatePrecision
+    fields:
+      - conditional:
+          condition: /text()
+          target: LatPreferredCentroidLatDec[1]
+          fields:
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 1]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.1'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 2]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.01'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 3]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 4]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.0001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 5]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.00001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 6]'
+                target: LatPreferredCentroidLatDec
+                fields:
+                  - string: '0.000001'
+  - header: verbatimCoordinateSystem
+    fields:
+      - string: ''
+  - header: locationRemarks
+    fields:
+      - string: ''
+  - header: eventID
+    fields:
+      - string: 'urn:emu.sam.sa.gov.au:Event:'
+      - field: BioEventRef/irn
+  - header: eventDate
+    glue: "/"
+    fields:
+      - conditional:
+          condition: /text()
+          target: SigDateObserved
+          fields:
+            - field: SigDateObserved
+          otherwise:
+            fields:
+              - conditional:
+                  condition: /text()
+                  target: SigDateReported
+                  fields:
+                    - field: SigDateReported
+                  otherwise:
+                    fields:
+                      - conditional:
+                          condition: /text()
+                          target: PreDateCollected
+                          fields:
+                            - field: PreDateCollected
+                          otherwise:
+                            fields:
+                              - range:
+                                  lower: ColDateVisitedFrom
+                                  higher: ColDateVisitedTo
+  - header: verbatimEventDate
+    glue: " "
+    fields:
+      - conditional:
+          condition: /text()
+          target: SigTimeObservedVerbatim
+          fields:
+            - string: 'Time:'
+            - field: SigTimeObservedVerbatim
+      - conditional:
+          condition: /text()
+          target: SigDateObservedVerbatim
+          fields:
+            - field: SigDateObservedVerbatim
+      - field: PreVerbatimDateCollected
+      - conditional:
+          condition: '[not(text())]'
+          target: SigDateObserved
+          fields:
+            - conditional:
+                condition: /text()
+                target: SigDateReported
+                fields:
+                  - string: 'Date reported:'
+                  - field: SigDateReported
+      - conditional:
+          condition: /text()
+          target: SigDateReportedVerbatim
+          fields:
+            - string: 'Date reported verbatim:'
+            - field: SigDateReportedVerbatim
+  - header: eventTime
+    fields:
+      - conditional:
+          condition: /text()
+          target: SigTimeObserved
+          fields:
+            - field: SigTimeObserved
+          otherwise:
+            fields:
+              - field: BioEventRef/ColTimeVisitedFrom
+  - header: eventRemarks
+    fields:
+      - string: ''
+  - header: 'dcterms:modified'
+    fields:
+      - field: AdmDateModified
+  - header: samplingProtocol
+    fields:
+      - first: [LocSamplingMethod, ColCollectionMethod]
+  - header: habitat
+    fields:
+      - field: BioMicrohabitatDescription
+  - header: occurrenceID
+    fields:
+      - string: ''
+  - header: catalogNumber
+    fields:
+      - field: CatPrefix
+      - field: CatRegNumber
+      - conditional:
+          condition: /text()
+          target: CatSuffix
+          fields:
+            - string: '.'
+            - field: CatSuffix
+  - header: occurrenceRemarks
+    glue: " "
+    fields:
+      - conditional:
+          condition: /text()
+          target: SigDisDirFromShore
+          fields:
+            - field: SigDisDirFromShore
+            - string: from shore.
+      - conditional:
+          condition: /text()
+          target: SigDisDirFromObserver
+          fields:
+            - field: SigDisDirFromObserver
+            - string: from observer.
+      - conditional:
+          condition: /text()
+          target: SigHowObserved
+          fields:
+            - string: 'How observed:'
+            - field: SigHowObserved
+      - conditional:
+          condition: /text()
+          target: SigSocialGroup
+          fields:
+            - string: 'Social group:'
+            - field: SigSocialGroup
+      - table:
+          tablename: ItemisedNote
+          fields:
+            - conditional:
+                condition: /text() = 'Sighting Note'
+                target: NotType
+                fields:
+                  - string: 'Sighting Note:'
+                  - field: NotText
+      - conditional:
+          condition: /text()
+          target: SigImagesAttached
+          fields:
+            - string: 'Images at South Australian Museum:'
+            - field: SigImagesAttached
+      - table:
+          tablename: ItemisedNote
+          fields:
+            - conditional:
+                condition: /text() = 'OccurrenceRemarks for ALA'
+                target: NotType
+                fields:
+                  - field: NotText
+      - conditional:
+          condition: /text()
+          target: HostInfo/tuple[1]/HosInformal
+          fields:
+            - string: 'Host:'
+            - field: HostInfo/tuple[1]/HosInformal
+      - conditional:
+          condition: /text()
+          target: HostInfo/tuple[1]/HosSiteOnHost
+          fields:
+            - string: "Site on Host:"
+            - field: HostInfo/tuple[1]/HosSiteOnHost
+  - header: recordedBy
+    glue: " "
+    rowend: ", "
+    fields:
+      - multiple: LocCollectorsLocal
+  - header: individualCount
+    fields:
+      - conditional:
+          condition: /text()
+          target: SigTotalNumberObserved
+          fields:
+            - field: SigTotalNumberObserved
+          otherwise:
+            fields:
+              - conditional:
+                  condition: /text()
+                  target: CatSpecimenCount
+                  fields:
+                    - field: CatSpecimenCount
+                  otherwise:
+                    fields:
+                      - conditional:
+                          condition:
+                          target: SexStageInfo/tuple/ZooSexStageCount
+                          fields:
+                            - xpath: 'sum((//ZooSexStageCount)[number(.) = .])'
+  - header: recordNumber
+    rowend: "|"
+    fields:
+      - table:
+          tablename: othernumbers
+          fields:
+            - conditional:
+                condition: "[starts-with(.,'Field N')]"
+                target: CatOtherNumbersType
+                fields:
+                  - field: CatOtherNumbersValue
+  - header: otherCatalogNumbers
+    fields:
+      - string: 'ecatalogue.irn:'
+      - field: 'irn[not (parent::BioEventRef)]'
+  - header: sex
+    rowend: "|"
+    fields:
+      - table:
+          tablename: SexStageInfo
+          fields:
+            - field: ZooSex
+  - header: lifeStage
+    rowend: "|"
+    fields:
+      - table:
+          tablename: SexStageInfo
+          fields:
+            - field: ZooStage
+  - header: preparations
+    fields:
+      - field: CatObjectForm
+  - header: associatedSequences
+    fields:
+      - string: ''
+  - header: principalRecord
+    fields:
+      - string: ''
+  - header: coordinateUncertaintyInMeters
+    glue: " "
+    fields:
+      - multiple: LatRadiusNumeric
+  - header: minimumDepthInMeters
+    fields:
+      - first: [MarDepthFromMet, AquDepthFromMet]
+  - header: maximumDepthInMeters
+    fields:
+      - first: [MarDepthtoMet, AquDepthtoMet]
+  - header: associatedTaxa
+    fields:
+      - conditional:
+          condition:
+          target: HostInfo/tuple[1]
+          fields:
+            - string: 'Host: '
+            - field: 'Hostinfo/tuple[1]/ClaScientificName'

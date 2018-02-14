@@ -1,0 +1,65 @@
+# South Australian Museum taxonomy export
+---
+
+title: SAM taxonomy export
+columns:
+    - header: Scientific name
+      fields:
+          - field: "ClaScientificName[not(ancestor::ClaCurrentNameRef)]"
+    - header: SA Occurrence status
+      rowend: ", "
+      fields:
+        - field: tuple[1]/GeoOccurrenceStatusType
+    - header: SA Occurrence comments
+      fields:
+        - field: tuple[1]/GeoOccurrenceStatusComments
+    - header: Family
+      fields:
+        - field: ClaFamily
+    - header: Genus
+      fields:
+        - field: ClaGenus
+    - header: Species
+      fields:
+        - field: ClaSpecies
+    - header: Subspecies
+      fields:
+        - field: ClaSubspecies
+    - header: Author string
+      fields:
+        - field: AutAuthorString
+    - header: Author
+      fields:
+        - table:
+            tablename: AutCombAuthorsRef_tab
+            fields:
+              - field: NamTaxonomicName
+    - header: Year
+      fields:
+        - field: AutCombYear
+    - header: Author (parenthetic)
+      fields:
+        - table:
+            tablename: AutBasionymAuthorsRef_tab
+            fields:
+              - field: NamTaxonomicName
+    - header: Year (parenthetic)
+      fields:
+        - field: AutBasionymYear
+    - header: Is name currently accepted?
+      fields:
+        - field: ClaCurrentlyAccepted
+    - header: Currently accepted name
+      fields:
+        - conditional:
+            condition: "/text() != ClaCurrentNameRef/ClaScientificName/text()"
+            target: "ClaScientificName[not(parent::ClaCurrentNameRef)]"
+            fields:
+              - field: "ClaCurrentNameRef/ClaScientificName"
+    - header: Common name
+      rowend: " | "
+      fields:
+        - table:
+            tablename: ComName_tab
+            fields:
+              - field: ComName

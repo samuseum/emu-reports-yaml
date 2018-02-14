@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://samuseum.sa.gov.au/schemas/yaml_report_schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "columns"
+  ],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "duplicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "targettable",
+        "indicator"
+      ],
+      "properties": {
+        "targettable": {
+          "type": "string"
+        },
+        "indicator": {
+          "type": "string"
+        }
+      }
+    },
+    "totalstring": {
+      "type": "string"
+    },
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "header",
+          "fields"
+        ],
+        "properties": {
+          "header": {
+            "type": "string"
+          },
+          "glue": {
+            "type": "string"
+          },
+          "rowend": {
+            "type": "string"
+          },
+          "fields": {
+            "$ref": "#/definitions/fields_ref"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "fields_ref": {
+      "type": "array",
+      "anyOf": [
+        {
+          "required": [
+            "string"
+          ]
+        },
+        {
+          "required": [
+            "field"
+          ]
+        },
+        {
+          "required": [
+            "multiple"
+          ]
+        },
+        {
+          "required": [
+            "first"
+          ]
+        },
+        {
+          "required": [
+            "range"
+          ]
+        },
+        {
+          "required": [
+            "conditional"
+          ]
+        },
+        {
+          "required": [
+            "table"
+          ]
+        },
+        {
+          "required": [
+            "xpath"
+          ]
+        }
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "string": {
+            "type": "string",
+            "minLength": 0
+          },
+          "field": {
+            "type": "string",
+            "minLength": 1
+          },
+          "multiple": {
+            "type": "string"
+          },
+          "first": {
+            "type": "array"
+          },
+          "range": {
+            "type": "object",
+            "required": [
+              "lower",
+              "higher"
+            ],
+            "properties": {
+              "lower": {
+                "type": "string"
+              },
+              "higher": {
+                "type": "string"
+              }
+            }
+          },
+          "conditional": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "condition",
+              "target",
+              "fields"
+            ],
+            "properties": {
+              "condition": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "glue": {
+                "type": "string"
+              },
+              "rowend": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "fields": {
+                "$ref": "#/definitions/fields_ref"
+              },
+              "otherwise": {
+                "type": "object",
+                "required": [
+                  "fields"
+                ],
+                "properties": {
+                  "fields": {
+                    "$ref": "#/definitions/fields_ref"
+                  }
+                }
+              }
+            }
+          },
+          "table": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tablename",
+              "fields"
+            ],
+            "properties": {
+              "tablename": {
+                "type": "string"
+              },
+              "glue": {
+                "type": "string"
+              },
+              "rowend": {
+                "type": "string"
+              },
+              "fields": {
+                "$ref": "#/definitions/fields_ref"
+              }
+            }
+          },
+          "xpath": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

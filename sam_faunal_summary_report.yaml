@@ -1,0 +1,144 @@
+# South Australian Museum report configuration
+---
+
+title: SAM Fauna Summary
+columns:
+    - header: Registration Number
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: /text() != ''
+              target: CatSuffix
+              fields:
+                  - string: "."
+                  - field: CatSuffix
+    - header: Old Reg Number
+      fields:
+          - field: CatOldRegNumber
+    - header: Other Numbers
+      glue: " "
+      rowend: " "
+      fields:
+          - table:
+              tablename: othernumbers
+              fields:
+                - field: CatOtherNumbersValue
+    - header: Specimen count
+      fields:
+          - field: CatSpecimenCount
+    - header: Specimen count modifier
+      fields:
+          - field: CatSpecimenCountModifier
+    - header: Object type
+      fields:
+          - field: CatObjectType
+    - header: Object form
+      fields:
+          - field: CatObjectform
+    - header: Date catalogued
+      fields:
+          - field: CatDateCatalogued
+    - header: Date collected
+      fields:
+          - field: PreDateCollected
+    - header: Collectors
+      fields:
+          - field: LocCollectorsLocal_tab
+    - header: Family
+      fields:
+          - conditional:
+                condition: /*[text()]
+                target: IdeAcceptedRef
+                fields:
+                    - field: IdeAcceptedRef/ClaFamily
+                otherwise:
+                    fields:
+                        - field: IdeCurrentFamilyLocal
+    - header: Genus
+      fields:
+          - conditional:
+                condition: /*[text()]
+                target: IdeAcceptedRef
+                fields:
+                    - field: IdeAcceptedRef/ClaGenus
+                otherwise:
+                    fields:
+                        - field: IdeCurrentGenusLocal
+    - header: Species
+      fields:
+          - conditional:
+                condition: /*[text()]
+                target: IdeAcceptedRef
+                fields:
+                    - field: IdeAcceptedRef/ClaSpecies
+                otherwise:
+                    fields:
+                        - field: IdeCurrentSpeciesLocal
+    - header: Subspecies
+      fields:
+          - conditional:
+                condition: /*[text()]
+                target: IdeAcceptedRef
+                fields:
+                    - field: IdeAcceptedRef/ClaSubspecies
+                otherwise:
+                    fields:
+                        - field: IdeCurrentSubspeciesLocal
+    - header: Type status
+      glue: " of "
+      rowend: "|"
+      fields:
+          - table:
+              tablename: typeinfo
+              fields:
+                - field: CitTypeStatus
+                - field: ClaScientificName
+    - header: Expedition Name
+      fields:
+          - field: ExpExpeditionName
+    - header: Site Code
+      fields:
+          - field: ColCollectionEventCode
+    - header: Collection Method
+      fields:
+          - first: [ColCollectionMethod, LocSamplingMethod]
+    - header: State
+      fields:
+          - field: LocProvinceStateTerritory
+    - header: Nearest Named Place
+      fields:
+          - field: LocNearestNamedPlace
+    - header: Special Geographic Unit
+      fields:
+          - field: LocSpecialGeographicUnit
+    - header: Precise Location
+      fields:
+          - field: LocPreciseLocation
+    - header: Latitude (Decimal)
+      fields:
+          - field: LatPreferredCentroidLatDec
+    - header: Longitude (Decimal)
+      fields:
+          - field: LatPreferredCentroidLongDec
+    - header: Latitude (DMS)
+      fields:
+          - field: LatPreferredCentroidLatitude
+    - header: Longitude (DMS)
+      fields:
+          - field: LatPreferredCentroidLongitude
+    - header: Determination
+      fields:
+          - field: LatPreferredDetermination
+    - header: Radius Verbatim
+      fields:
+          - field: LatPreferredRadiusVerbatim
+    - header: Tissue Type
+      fields:
+          - field: BioTissueType
+    - header: ABTC Record
+      fields:
+          - field: BioTissueRecordRef/SummaryData
+    - header: Notes
+      fields:
+          - field: NotNotes

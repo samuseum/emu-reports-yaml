@@ -1,0 +1,271 @@
+# South Australian Museum report configuration
+---
+
+title: SAM ABTC Report
+columns:
+    - header: Prefix
+      fields:
+          - field: CatPrefix[not(parent::SouVoucherHeldRef)]
+    - header: Reg number
+      fields:
+          - field: CatRegNumber[not(parent::SouVoucherHeldRef)]
+    - header: Suffix
+      fields:
+          - field: CatSuffix[not(parent::SouVoucherHeldRef)]
+    - header: Alcohol number
+      fields:
+          - field: TisAlcoholNumber
+    - header: Frozen number
+      fields:
+          - field: TisFrozenNumber
+    - header: Freezer project number
+      fields:
+          - field: TisFreezerProjectNumber
+    - header: Original tube number
+      fields:
+          - field: TisOriginalTubeNumber
+    - header: Alcohol tissues
+      rowend: "| "
+      fields:
+          - table:
+                tablename: Tissue
+                fields:
+                    - conditional:
+                        condition: "[starts-with(.,'Ethanol')]"
+                        target: TisStorageMedium
+                        fields:
+                            - field: TisTissue
+    - header: Frozen tissues
+      rowend: "| "
+      fields:
+          - table:
+                tablename: Tissue
+                fields:
+                    - conditional:
+                        condition: /text() = 'Frozen'
+                        target: TisStorageMedium
+                        fields:
+                            - field: TisTissue
+    - header: Consumed tissues
+      rowend: "| "
+      fields:
+          - table:
+                tablename: Tissue
+                fields:
+                    - conditional:
+                        condition: /text() = 'Consumed'
+                        target: TisTissueDisposition
+                        fields:
+                            - field: TisTissue
+    - header: Tissue comments
+      fields:
+          - field: TisTissueComments
+    - header: Other Numbers
+      rowend: ", "
+      glue: ", "
+      fields:
+          - table:
+                tablename: OtherNumbers
+                fields:
+                  - field: CatOtherNumbersValue
+    - header: Category
+      fields:
+          - field: SouCategory
+    - header: Phylum
+      fields:
+          - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentPhylumLocal]
+    - header: Class
+      fields:
+          - first: [IdeAcceptedRef/ClaClass, IdeCurrentClassLocal]
+    - header: Order
+      fields:
+          - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+    - header: Family
+      fields:
+          - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+    - header: Genus
+      fields:
+          - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+    - header: Species
+      fields:
+          - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+    - header: Subspecies
+      fields:
+          - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+    - header: ID comments
+      fields:
+        - field: IdeCurrentComments
+    - header: Date Collected
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: PreDateCollected[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: PreDateCollected[not(ancestor::SouVoucherHeldRef)]
+    - header: Verbatim date collected
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: PreVerbatimDateCollected[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: PreVerbatimDateCollected[not(ancestor::SouVoucherHeldRef)]
+    - header: Country
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LocCountry[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LocCountry[not(ancestor::SouVoucherHeldRef)]
+    - header: State
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LocProvinceStateTerritory[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LocProvinceStateTerritory[not(ancestor::SouVoucherHeldRef)]
+    - header: Special geographic unit
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LocSpecialGeographicUnit[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LocSpecialGeographicUnit[not(ancestor::SouVoucherHeldRef)]
+    - header: Nearest named place
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LocNearestNamedPlace[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LocNearestNamedPlace[not(ancestor::SouVoucherHeldRef)]
+    - header: Precise Location
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LocPreciseLocation[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LocPreciseLocation[not(ancestor::SouVoucherHeldRef)]
+    - header: Site Code
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: ColCollectionEventCode[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: ColCollectionEventCode[not(ancestor::SouVoucherHeldRef)]
+    - header: Expedition
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: ExpExpeditionName[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: ExpExpeditionName[not(ancestor::SouVoucherHeldRef)]
+    - header: Latitude
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LatPreferredCentroidLatDec[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LatPreferredCentroidLatDec[not(ancestor::SouVoucherHeldRef)]
+    - header: Longitude
+      fields:
+          - conditional:
+                condition:
+                target: SouVoucherHeldRef/BioEventRef
+                fields:
+                    - field: LatPreferredCentroidLongDec[ancestor::SouVoucherHeldRef]
+                otherwise:
+                    fields:
+                        - field: LatPreferredCentroidLongDec[not(ancestor::SouVoucherHeldRef)]
+    - header: Collector
+      fields:
+          - conditional:
+                condition: /tuple/*[text()]
+                target: LocCollectorsRef_tab[ancestor::SouVoucherHeldRef]
+                fields:
+                    - table:
+                        tablename: LocCollectorsRef_tab[ancestor::SouVoucherHeldRef]
+                        rowend: ", "
+                        fields:
+                          - field: SummaryData
+                otherwise:
+                    fields:
+                        - table:
+                              tablename: LocCollectorsRef_tab[not(ancestor::SouVoucherHeldRef)]
+                              rowend: ", "
+                              fields:
+                                - field: SummaryData
+    - header: Donor
+      fields:
+          - field: AcqNameSourceLocal_tab
+    - header: Voucher extant?
+      fields:
+          - field: SouVoucherExtant
+    - header: Source institution
+      fields:
+          - field: SouSourceInstitutionRef/SummaryData
+    - header: Source institution code
+      fields:
+          - field: SouInstitutionCode
+    - header: Source collection code
+      fields:
+          - field: SouCollectionCode
+    - header: Source registration number
+      fields:
+          - field: SouRegistrationNumber
+    - header: Source specimen preservation method
+      fields:
+          - field: TisInitalPreservationMethod
+    - header: Embargoed?
+      fields:
+          - field: TisSampleEmbargoed
+    - header: Embargoed by
+      fields:
+          - field: TisEmbargoedByRef/SummaryData
+    - header: Embargoed until
+      fields:
+          - field: TisEmbargoedUntilDate
+    - header: Date inserted
+      fields:
+          - field: AdmDateInserted
+    - header: Tissue - storage - disposition
+      glue: " "
+      rowend: "\n"
+      fields:
+          - table:
+                tablename: Tissue
+                fields:
+                  - field: TisTissue
+                  - field: TisStorageMedium
+                  - field: TisTissueDisposition
+    - header: EMu irn
+      fields:
+          - field: irn[not(parent::BioEventRef)]

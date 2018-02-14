@@ -1,0 +1,78 @@
+# South Australian Museum report configuration
+---
+
+title: Ornithology for birds labels
+columns:
+    - header: regno
+      fields:
+          - field: CatBarcode
+    - header: Identification
+      glue: " "
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaGenus
+            otherwise:
+              fields:
+                - field: IdeCurrentGenusLocal
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: IdeAcceptedRef/ClaSpecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSpeciesLocal
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaSubspecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSubspeciesLocal
+    - header: "Collection Date"
+      fields:
+          - field: PreDateCollected
+    - header: "Collection Site"
+      glue: ", "
+      fields:
+          - field: LocProvinceStateTerritory
+          - field: LocSpecialGeographicUnit
+          - field: LocPreciseLocation
+    - header: Sex/Stage
+      glue: " "
+      rowend: "\n"
+      fields:
+          - table:
+              tablename: sexstage
+              fields:
+                - field: ZooSex
+                - field: ZooStage
+    - header: Collector
+      rowend: ", "
+      fields:
+        - table:
+            tablename: LocCollectorsRef_tab
+            fields:
+              - conditional:
+                  condition: /text() = 'Person'
+                  target: NamPartyType
+                  fields:
+                    - field: NamFullName
+                  otherwise:
+                    fields:
+                      - conditional:
+                          condition: /text() = 'Organisation'
+                          target: NamPartyType
+                          fields:
+                            - field: NamOrganisation
+                          otherwise:
+                            fields:
+                              - conditional:
+                                  condition: /text() = 'Collaboration'
+                                  target: NamPartyType
+                                  fields:
+                                    - field: ColCollaborationName

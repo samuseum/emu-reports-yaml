@@ -1,0 +1,239 @@
+# Mammalogy terrestrial mammals
+---
+
+title: Mammalogy Terrestrial Mammals report
+columns:
+    - header: Prefix
+      fields:
+        - field: CatPrefix
+    - header: Reg Number
+      fields:
+        - field: CatRegNumber
+    - header: Suffix
+      fields:
+        - field: CatSuffix
+    - header: Preceeding Numbers
+      fields:
+        - field: AcqPrecedingNumbers
+    - header: Other Numbers
+      glue: ", "
+      fields:
+        - multiple: CatOtherNumbersValue
+    - header: Date Catalogued
+      fields:
+        - field: CatDateCatalogued
+    - header: Catalogued by
+      fields:
+        - field: CatCataloguedByRef/SummaryData
+    - header: Form of Object
+      fields:
+        - field: CatObjectForm
+    - header: Kind of Object
+      fields:
+        - field: CatObjectType
+    - header: Family
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaFamily
+            otherwise:
+              fields:
+                - field: IdeCurrentFamilyLocal
+    - header: Genus
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaGenus
+            otherwise:
+              fields:
+                - field: IdeCurrentGenusLocal
+    - header: Species
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: IdeAcceptedRef/ClaSpecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSpeciesLocal
+    - header: Subspecies
+      fields:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            fields:
+              - field: ClaSubspecies
+            otherwise:
+              fields:
+                - field: IdeCurrentSubspeciesLocal
+    - header: Type Status
+      rowend: "|"
+      glue: " of "
+      fields:
+        - table:
+            tablename: TypeStatus
+            fields:
+              - field: CitTypeStatus
+              - field: ClaScientificName
+    - header: ID Confidence
+      fields:
+        - field: IdeCurrentConfidence
+    - header: Identified by
+      fields:
+        - field: IdeCurrentIdentifiedByLocal
+    - header: Date Identified
+      fields:
+        - field: IdeCurrentDateIdentified
+    - header: ID Comments
+      fields:
+        - field: IdeCurrentComments
+    - header: ID Current
+      fields:
+        - field: IdeCurrentCurrent
+    - header: Date Collected
+      fields:
+        - field: PreDateCollected
+    - header: Origin Of Specimen
+      fields:
+        - field: LocOriginOfSpecimen
+    - header: Age Of Material
+      fields:
+        - field: MamAgeOfMaterial
+    - header: Collector
+      fields:
+        - field: LocCollectorsLocal_tab
+    - header: Expedition Name
+      fields:
+        - field: ExpExpeditionName
+    - header: Site Code
+      fields:
+        - field: ColCollectionEventCode
+    - header: Latitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLatitude
+    - header: Latitude Dec
+      fields:
+        - field: LatPreferredCentroidLatDec
+    - header: Longitude (DMS)
+      fields:
+        - field: LatPreferredCentroidLongitude
+    - header: Longitude Dec
+      fields:
+        - field: LatPreferredCentroidLongDec
+    - header: Precision
+      fields:
+        - field: LatPreferredRadiusVerbatim
+    - header: Determination
+      fields:
+        - field: LatLatLongDetermination_tab[1]
+    - header: Datum
+      fields:
+        - field: LatDatum_tab[1]
+    - header: Other Datum
+      fields:
+        - field: MapOtherDatum_tab[1]
+    - header: Country
+      fields:
+        - field: LocCountry
+    - header: Province/State/Territory
+      fields:
+        - field: LocProvinceStateTerritory
+    - header: Location
+      fields:
+        - field: LocPreciseLocation
+    - header: Nearest Named Place
+      fields:
+        - field: LocNearestNamedPlace
+    - header: Special Geographic Unit
+      fields:
+        - field: LocSpecialGeographicUnit
+    - header: Method Of Capture
+      fields:
+        - field: MamMethodOfCapture
+    - header: Tissues Collected
+      fields:
+        - field: BioTissueType
+    - header: ABTC Number
+      fields:
+        - field: BioTissueRecordRef/SummaryData
+    - header: Preservative
+      fields:
+        - field: ZooPreservative
+    - header: Fixative
+      fields:
+        - field: ZooFixative
+    - header: How Acquired
+      fields:
+        - field: AcqHowAcquired
+    - header: Acquisition Date
+      fields:
+        - field: AcqAcquisitionDate
+    - header: Name of Source
+      rowend: ", "
+      fields:
+        - table:
+            tablename: AcqNameSourceRef_tab
+            fields:
+              - field: SummaryData
+    - header: Current Location
+      fields:
+        - field: LocCurrentLocationRef/SummaryData
+    - header: Permanent Location
+      fields:
+        - field: LocPermanentLocationRef/SummaryData
+    - header: Mammal Age
+      fields:
+        - field: MamMammalAge
+    - header: Sex
+      fields:
+        - field: MamSex
+    - header: Reproductive Condition
+      fields:
+        - field: MamReproductiveCondition
+    - header: Weight
+      fields:
+        - field: BirWeight
+    - header: Weight Unit
+      fields:
+        - field: MamMammalWeightUnit
+    - header: Weight Age Comments
+      fields:
+        - field: MamWeightAgeComments
+    - header: Head Length
+      fields:
+        - field: MamHeadLength
+    - header: Head/Body Length
+      fields:
+        - field: MamHeadBodyLength
+    - header: Tail Length
+      fields:
+        - field: MamTailLength
+    - header: Hindfoot Length
+      fields:
+        - field: MamHindfootLength
+    - header: Ear/Notch Length
+      fields:
+        - field: MamEarNotchLength
+    - header: Forearm Length
+      fields:
+        - field: MamForearmLength
+    - header: Total Length
+      fields:
+        - field: MamTotalLength
+    - header: Measurement Unit
+      fields:
+        - field: MamUnit
+    - header: Habitat
+      fields:
+        - field: AquHabitatDescription
+    - header: Notes
+      fields:
+        - field: NotNotes
+    - header: Itemised Notes
+      fields:
+        - field: NotText0

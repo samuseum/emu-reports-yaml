@@ -1,0 +1,83 @@
+# Heritage Collection Asset Register Report
+---
+
+title: Heritage Collection Asset Register report
+columns:
+    - header: Registration Number
+      fields:
+          - field: CatPrefix
+          - field: CatRegNumber
+          - conditional:
+              condition: /text() != ''
+              target: CatSuffix
+              fields:
+                  - string: "."
+                  - field: CatSuffix
+    - header: Collection
+      fields:
+        - field: CatCollectionName
+    - header: Description
+      glue: " "
+      fields:
+        - field: CatObjectType
+        - field: recordsummarydata
+    - header: Acquired from
+      fields:
+        - conditional:
+            condition:
+            target: AcqNamSourceRef_tab/SummaryData
+            fields:
+              - field: AcqNamSourceRef_tab/SummaryData
+            otherwise:
+              fields:
+                - table:
+                    tablename: LocCollectorsRef_tab
+                    fields:
+                      - field: SummaryData
+    - header: How Acquired
+      fields:
+        - conditional:
+            condition: /text() != ''
+            target: AcqHowAcquired
+            fields:
+              - field: AcqHowAcquired
+            otherwise:
+              fields:
+                - string: Donation
+    - header: Date Acquired
+      fields:
+        - field: AcqAcquisitionDate
+    - header: Date Registered
+      fields:
+        - conditional:
+            condition: /text() != ''
+            target: CatDateCatalogued
+            fields:
+              - field: CatDateCatalogued
+            otherwise:
+              fields:
+                - field: AdmDateInserted
+    - header: Inserted by
+      fields:
+        - string: "[insert name of person filling in form]"
+    - header: Value
+      fields:
+        - field: tuple[1]/ValValuationAmount
+    - header: Currency
+      fields:
+        - string: AUD
+    - header: Valuation Method
+      fields:
+        - field: tuple[1]/ValReasonForValuation
+    - header: Valued by
+      fields:
+        - field: tuple[1]/ValValuedByRef/SummaryData
+    - header: "10 digit GL code"
+      fields:
+        - string: ""
+    - header: "Supporting Docs Y/N"
+      fields:
+        - string: ""
+    - header: Comments
+      fields:
+        - string: ""
