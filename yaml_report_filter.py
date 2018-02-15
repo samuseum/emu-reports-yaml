@@ -13,31 +13,31 @@ import yaml
 import lxml.etree as et
 
 
-def cell_field(field_input, field):
+def cell_column(et_elem, field):
     """
     given field, a string, returns the matching record from the ElementTree
-    record field_input.
+    record et_elem.
     >>> xml_string = '''
     ...     <record>
     ...         <thisfield>value</thisfield>
     ...     </record>'''
     >>> field = "thisfield"
-    >>> cell_field(et.fromstring(xml_string), field)
+    >>> cell_column(et.fromstring(xml_string), field)
     'value'
     """
     base_path = ".//" + field
     string_path = base_path + "/text()"
     try:
-        field_input.xpath(base_path)
+        et_elem.xpath(base_path)
     except et.XPathEvalError:
         error = "invalid expression '%s'" % base_path
         sys.exit(error)
-    strng = field_input.xpath(string_path)
+    strng = et_elem.xpath(string_path)
 
     if len(strng) > 1:
         error = ("error: Getting multiple values, '%s', from the field"
                  "'%s'.\nOnly one value should be returned from the "
-                 " input: \n%s" % (strng, field, et.tostring(field_input)))
+                 " input: \n%s" % (strng, field, et.tostring(et_elem)))
         sys.exit(error)
     elif len(strng) == 0:
         return ""
@@ -65,9 +65,9 @@ def cell_table(table_input, field, glue="", rowend=""):
     >>> field = {
     ...             'tablename':
     ...             'table',
-    ...             'fields': [
+    ...             'elements': [
     ...                         {
-    ...                             'field': 'thisfield'
+    ...                             'column': 'thisfield'
     ...                         }
     ...                       ]
     ...         }
@@ -103,11 +103,11 @@ def cell_table(table_input, field, glue="", rowend=""):
         field_array = []
         row_string = ""
         try:
-            for row_field in field["fields"]:
+            for row_field in field["elements"]:
                 f = process_field(table_row, row_field, glue, rowend)
                 field_array.append(f)
         except KeyError:
-            error = ("error: no fields recorded in config"
+            error = ("error: no elements recorded in config"
                      " for table %s " % tablename)
             sys.exit(error)
         if field_array:
@@ -131,7 +131,7 @@ def cell_conditional(conditional_input, field, glue="", rowend=""):
     >>> field = {
     ...          'condition': '/text()',
     ...          'target': 'top',
-    ...          'fields': [
+    ...          'elements': [
     ...                     {
     ...                        'string': 'condition met'
     ...                     }
@@ -142,13 +142,13 @@ def cell_conditional(conditional_input, field, glue="", rowend=""):
     >>> field = {
     ...          'condition': '/text() = low',
     ...          'target': 'top',
-    ...          'fields': [
+    ...          'elements': [
     ...                     {
     ...                        'string': 'condition met'
     ...                     }
     ...                    ],
     ...          'otherwise': {
-    ...                      'fields': [
+    ...                      'elements': [
     ...                                 {
     ...                             'string': 'condition not met'
     ...                                 }
@@ -165,7 +165,7 @@ def cell_conditional(conditional_input, field, glue="", rowend=""):
     except KeyError:
         error = ("error: conditional field '%s' must have condition specified."
                  % field)
-    fields_for_condition = field["fields"]
+    elements_for_condition = field["elements"]
     if 'glue' in field:
         glue = field["glue"]
     if 'otherwise' in field:
@@ -190,14 +190,14 @@ def cell_conditional(conditional_input, field, glue="", rowend=""):
         if not otherwise:
             return
         else:
-            fields_for_condition = otherwise["fields"]
+            elements_for_condition = otherwise["elements"]
 
     try:
-        condition_string = field_string(
-            conditional_input, fields_for_condition, glue, rowend)
+        condition_string = cell_string(
+            conditional_input, elements_for_condition, glue, rowend)
     except:
         error = ("Failed to process conditional input: %s"
-                 % fields_for_condition)
+                 % elements_for_condition)
         sys.exit(error)
 
     return condition_string
@@ -241,8 +241,8 @@ def cell_range(input_data, field, glue, rowend):
     low = field["lower"]
     high = field["higher"]
 
-    lower = cell_field(input_data, low)
-    higher = cell_field(input_data, high)
+    lower = cell_column(input_data, low)
+    higher = cell_column(input_data, high)
     if glue == '':
         if 'glue' in field:
             glue = field["glue"]
@@ -259,7 +259,7 @@ def cell_range(input_data, field, glue, rowend):
 
 
 def cell_multiple(input_data, field, glue):
-    """returns all nodes 'field' concatenated with glue
+    """returns all nodes 'column' concatenated with glue
     >>> xml_string = '''
     ...     <multiple>
     ...         <thisfield>one</thisfield>
@@ -293,27 +293,27 @@ def cell_multiple(input_data, field, glue):
         glue = field["glue"]
 
     field_path = ".//" + path + "/text()"
-    fields = input_data.xpath(field_path)
-    ms = glue.join(fields)
+    elements = input_data.xpath(field_path)
+    ms = glue.join(elements)
     return ms.encode("utf-8")
 
 
-def cell_xpath(field_input, query):
+def cell_xpath(et_elem, query):
     """
     given field, a string containing an xpath epxression,
         returns the matching record from the ElementTree
-    record field_input.
+    element et_elem.
     >>> xml_string = '''
     ...     <record>
     ...         <thisfield>value</thisfield>
     ...     </record>'''
-    >>> field = "thisfield"
-    >>> cell_field(et.fromstring(xml_string), field)
+    >>> query = "thisfield/text()"
+    >>> cell_xpath(et.fromstring(xml_string), query)
     'value'
     """
     query_path = query
     try:
-        result = field_input.xpath(query_path)
+        result = et_elem.xpath(query_path)
     except et.XPathEvalError:
         error = "invalid expression '%s'" % query_path
         sys.exit(error)
@@ -336,8 +336,8 @@ def process_field(input_data, field, glue, rowend):
         return cell_conditional(input_data, v, glue, rowend)
     elif k == "string":
         return v
-    elif k == "field":
-        return cell_field(input_data, v)
+    elif k == "column":
+        return cell_column(input_data, v)
     elif k == "multiple":
         return cell_multiple(input_data, v, glue)
     elif k == "range":
@@ -348,29 +348,29 @@ def process_field(input_data, field, glue, rowend):
     elif k == "first":
         first_of = []
         for i in v:
-            c = cell_field(input_data, i)
+            c = cell_column(input_data, i)
             first_of.append(c)
         return next((s for s in first_of if s), '')
     elif k == "xpath":
         return cell_xpath(input_data, v)
 
 
-def field_string(input_data, config_fields, glue, rowend):
+def cell_string(input_data, config_elements, glue, rowend):
     """
     Return a string to go into this cell of the results
     input_data =  ElementTree record
-    config_fields = a list of dicts
+    config_elements = a list of dicts
     """
     fs = ""
-    field_string_array = []
-    for i, field in enumerate(config_fields):
+    cell_string_array = []
+    for i, field in enumerate(config_elements):
         this_field = process_field(input_data, field, glue, rowend)
         if this_field:
-            field_string_array.append(this_field)
-    if not field_string_array:
+            cell_string_array.append(this_field)
+    if not cell_string_array:
         fs = ""
     else:
-        fs = glue.join(field_string_array)
+        fs = glue.join(cell_string_array)
     return fs
 
 
@@ -448,19 +448,19 @@ def read_emu_xml(emu_xml, config):
 
     output_list = []
 
-    for event, element in context:
+    for event, elem in context:
         if event == 'start':
-            if element.tag != 'atom':
+            if elem.tag != 'atom':
                 # The tree only gets deeper at table and tuple nodes
                 nesting += 1
 
         if event == 'end':
-            if element.tag != 'atom':
+            if elem.tag != 'atom':
                 nesting -= 1
-                if nesting == 1 and element.tag == 'tuple':
+                if nesting == 1 and elem.tag == 'tuple':
                     # end of this record has been reached
                     # so transform the entire record
-                    simplified = simplify_emu_xml(element)
+                    simplified = simplify_emu_xml(elem)
                     line = create_line_record(simplified, config)
                     for l in line:
                         output_list.append(l)
@@ -505,8 +505,8 @@ def line_as_dicts(line, config):
         else:
             rowend = ""
         header = column['header']
-        fields = column['fields']
-        cell = field_string(line, fields, glue, rowend)
+        elements = column['elements']
+        cell = cell_string(line, elements, glue, rowend)
         line_as_dicts[header] = cell
     unidict = {k.decode('utf8'): v.decode('utf8')
                for k, v in line_as_dicts.items()}
@@ -549,7 +549,7 @@ def create_line_record(line, config):
             sys.exit(error)
         if len(line.xpath(target_xpath)) > 1:
             for i, n in enumerate(line.xpath(target_xpath)):
-                # add the indicator fields as nodes
+                # add the indicator elements as nodes
                 working_line = deepcopy(line)
                 root = working_line.getroot()
                 indicator = et.SubElement(root, ind)

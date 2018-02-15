@@ -4,141 +4,141 @@
 title: SAM Fauna Summary
 columns:
     - header: Registration Number
-      fields:
-          - field: CatPrefix
-          - field: CatRegNumber
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
           - conditional:
               condition: /text() != ''
               target: CatSuffix
-              fields:
+              elements:
                   - string: "."
-                  - field: CatSuffix
+                  - column: CatSuffix
     - header: Old Reg Number
-      fields:
-          - field: CatOldRegNumber
+      elements:
+          - column: CatOldRegNumber
     - header: Other Numbers
       glue: " "
       rowend: " "
-      fields:
+      elements:
           - table:
               tablename: othernumbers
-              fields:
-                - field: CatOtherNumbersValue
+              elements:
+                - column: CatOtherNumbersValue
     - header: Specimen count
-      fields:
-          - field: CatSpecimenCount
+      elements:
+          - column: CatSpecimenCount
     - header: Specimen count modifier
-      fields:
-          - field: CatSpecimenCountModifier
+      elements:
+          - column: CatSpecimenCountModifier
     - header: Object type
-      fields:
-          - field: CatObjectType
+      elements:
+          - column: CatObjectType
     - header: Object form
-      fields:
-          - field: CatObjectform
+      elements:
+          - column: CatObjectform
     - header: Date catalogued
-      fields:
-          - field: CatDateCatalogued
+      elements:
+          - column: CatDateCatalogued
     - header: Date collected
-      fields:
-          - field: PreDateCollected
+      elements:
+          - column: PreDateCollected
     - header: Collectors
-      fields:
-          - field: LocCollectorsLocal_tab
+      elements:
+          - column: LocCollectorsLocal_tab
     - header: Family
-      fields:
+      elements:
           - conditional:
                 condition: /*[text()]
                 target: IdeAcceptedRef
-                fields:
-                    - field: IdeAcceptedRef/ClaFamily
+                elements:
+                    - column: IdeAcceptedRef/ClaFamily
                 otherwise:
-                    fields:
-                        - field: IdeCurrentFamilyLocal
+                    elements:
+                        - column: IdeCurrentFamilyLocal
     - header: Genus
-      fields:
+      elements:
           - conditional:
                 condition: /*[text()]
                 target: IdeAcceptedRef
-                fields:
-                    - field: IdeAcceptedRef/ClaGenus
+                elements:
+                    - column: IdeAcceptedRef/ClaGenus
                 otherwise:
-                    fields:
-                        - field: IdeCurrentGenusLocal
+                    elements:
+                        - column: IdeCurrentGenusLocal
     - header: Species
-      fields:
+      elements:
           - conditional:
                 condition: /*[text()]
                 target: IdeAcceptedRef
-                fields:
-                    - field: IdeAcceptedRef/ClaSpecies
+                elements:
+                    - column: IdeAcceptedRef/ClaSpecies
                 otherwise:
-                    fields:
-                        - field: IdeCurrentSpeciesLocal
+                    elements:
+                        - column: IdeCurrentSpeciesLocal
     - header: Subspecies
-      fields:
+      elements:
           - conditional:
                 condition: /*[text()]
                 target: IdeAcceptedRef
-                fields:
-                    - field: IdeAcceptedRef/ClaSubspecies
+                elements:
+                    - column: IdeAcceptedRef/ClaSubspecies
                 otherwise:
-                    fields:
-                        - field: IdeCurrentSubspeciesLocal
+                    elements:
+                        - column: IdeCurrentSubspeciesLocal
     - header: Type status
       glue: " of "
       rowend: "|"
-      fields:
+      elements:
           - table:
               tablename: typeinfo
-              fields:
-                - field: CitTypeStatus
-                - field: ClaScientificName
+              elements:
+                - column: CitTypeStatus
+                - column: ClaScientificName
     - header: Expedition Name
-      fields:
-          - field: ExpExpeditionName
+      elements:
+          - column: ExpExpeditionName
     - header: Site Code
-      fields:
-          - field: ColCollectionEventCode
+      elements:
+          - column: ColCollectionEventCode
     - header: Collection Method
-      fields:
+      elements:
           - first: [ColCollectionMethod, LocSamplingMethod]
     - header: State
-      fields:
-          - field: LocProvinceStateTerritory
+      elements:
+          - column: LocProvinceStateTerritory
     - header: Nearest Named Place
-      fields:
-          - field: LocNearestNamedPlace
+      elements:
+          - column: LocNearestNamedPlace
     - header: Special Geographic Unit
-      fields:
-          - field: LocSpecialGeographicUnit
+      elements:
+          - column: LocSpecialGeographicUnit
     - header: Precise Location
-      fields:
-          - field: LocPreciseLocation
+      elements:
+          - column: LocPreciseLocation
     - header: Latitude (Decimal)
-      fields:
-          - field: LatPreferredCentroidLatDec
+      elements:
+          - column: LatPreferredCentroidLatDec
     - header: Longitude (Decimal)
-      fields:
-          - field: LatPreferredCentroidLongDec
+      elements:
+          - column: LatPreferredCentroidLongDec
     - header: Latitude (DMS)
-      fields:
-          - field: LatPreferredCentroidLatitude
+      elements:
+          - column: LatPreferredCentroidLatitude
     - header: Longitude (DMS)
-      fields:
-          - field: LatPreferredCentroidLongitude
+      elements:
+          - column: LatPreferredCentroidLongitude
     - header: Determination
-      fields:
-          - field: LatPreferredDetermination
+      elements:
+          - column: LatPreferredDetermination
     - header: Radius Verbatim
-      fields:
-          - field: LatPreferredRadiusVerbatim
+      elements:
+          - column: LatPreferredRadiusVerbatim
     - header: Tissue Type
-      fields:
-          - field: BioTissueType
+      elements:
+          - column: BioTissueType
     - header: ABTC Record
-      fields:
-          - field: BioTissueRecordRef/SummaryData
+      elements:
+          - column: BioTissueRecordRef/SummaryData
     - header: Notes
-      fields:
-          - field: NotNotes
+      elements:
+          - column: NotNotes

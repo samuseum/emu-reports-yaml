@@ -4,62 +4,62 @@
 title: SAM taxonomy export
 columns:
     - header: Scientific name
-      fields:
-          - field: "ClaScientificName[not(ancestor::ClaCurrentNameRef)]"
+      elements:
+          - column: "ClaScientificName[not(ancestor::ClaCurrentNameRef)]"
     - header: SA Occurrence status
       rowend: ", "
-      fields:
-        - field: tuple[1]/GeoOccurrenceStatusType
+      elements:
+        - column: tuple[1]/GeoOccurrenceStatusType
     - header: SA Occurrence comments
-      fields:
-        - field: tuple[1]/GeoOccurrenceStatusComments
+      elements:
+        - column: tuple[1]/GeoOccurrenceStatusComments
     - header: Family
-      fields:
-        - field: ClaFamily
+      elements:
+        - column: ClaFamily
     - header: Genus
-      fields:
-        - field: ClaGenus
+      elements:
+        - column: ClaGenus
     - header: Species
-      fields:
-        - field: ClaSpecies
+      elements:
+        - column: ClaSpecies
     - header: Subspecies
-      fields:
-        - field: ClaSubspecies
+      elements:
+        - column: ClaSubspecies
     - header: Author string
-      fields:
-        - field: AutAuthorString
+      elements:
+        - column: AutAuthorString
     - header: Author
-      fields:
+      elements:
         - table:
             tablename: AutCombAuthorsRef_tab
-            fields:
-              - field: NamTaxonomicName
+            elements:
+              - column: NamTaxonomicName
     - header: Year
-      fields:
-        - field: AutCombYear
+      elements:
+        - column: AutCombYear
     - header: Author (parenthetic)
-      fields:
+      elements:
         - table:
             tablename: AutBasionymAuthorsRef_tab
-            fields:
-              - field: NamTaxonomicName
+            elements:
+              - column: NamTaxonomicName
     - header: Year (parenthetic)
-      fields:
-        - field: AutBasionymYear
+      elements:
+        - column: AutBasionymYear
     - header: Is name currently accepted?
-      fields:
-        - field: ClaCurrentlyAccepted
+      elements:
+        - column: ClaCurrentlyAccepted
     - header: Currently accepted name
-      fields:
+      elements:
         - conditional:
             condition: "/text() != ClaCurrentNameRef/ClaScientificName/text()"
             target: "ClaScientificName[not(parent::ClaCurrentNameRef)]"
-            fields:
-              - field: "ClaCurrentNameRef/ClaScientificName"
+            elements:
+              - column: "ClaCurrentNameRef/ClaScientificName"
     - header: Common name
       rowend: " | "
-      fields:
+      elements:
         - table:
             tablename: ComName_tab
-            fields:
-              - field: ComName
+            elements:
+              - column: ComName

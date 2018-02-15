@@ -4,129 +4,129 @@
 title: SAM Entomology
 columns:
     - header: Registration Number
-      fields:
-          - field: CatPrefix
-          - field: CatRegNumber
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
           - conditional:
               condition: "/text() != ''"
               target: CatSuffix
-              fields:
+              elements:
                   - string: "."
-                  - field: CatSuffix
+                  - column: CatSuffix
     - header: Prefix
-      fields:
-        - field: CatPrefix
+      elements:
+        - column: CatPrefix
     - header: Regno
-      fields:
-        - field: CatRegNumber
+      elements:
+        - column: CatRegNumber
     - header: Suffix
-      fields:
-        - field: CatSuffix
+      elements:
+        - column: CatSuffix
     - header: Old Reg Number
-      fields:
-        - field: CatOldRegNumber
+      elements:
+        - column: CatOldRegNumber
     - header: Transcription from label
-      fields:
-        - field: EntLabelTranscription
+      elements:
+        - column: EntLabelTranscription
     - header: Other Numbers
       glue: " "
       rowend: " "
-      fields:
+      elements:
         - table:
             tablename: othernumbers
-            fields:
-              - field: CatOtherNumbersValue
+            elements:
+              - column: CatOtherNumbersValue
     - header: Specimen count
-      fields:
-        - field: CatSpecimenCount
+      elements:
+        - column: CatSpecimenCount
     - header: Specimen count modifier
-      fields:
-        - field: CatSpecimenCountModifier
+      elements:
+        - column: CatSpecimenCountModifier
     - header: Object form
-      fields:
-        - field: CatObjectform
+      elements:
+        - column: CatObjectform
     - header: Date catalogued
-      fields:
-        - field: CatDateCatalogued
+      elements:
+        - column: CatDateCatalogued
     - header: Order
-      fields:
+      elements:
         - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
     - header: Family
-      fields:
+      elements:
         - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
     - header: Genus
-      fields:
+      elements:
         - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
     - header: Species
-      fields:
+      elements:
         - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
     - header: Subspecies
-      fields:
+      elements:
         - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
     - header: Type status
       glue: " of "
       rowend: "|"
-      fields:
+      elements:
         - table:
             tablename: typeinfo
-            fields:
-              - field: CitTypeStatus
-              - field: ClaScientificName
+            elements:
+              - column: CitTypeStatus
+              - column: ClaScientificName
     - header: Expedition Name
-      fields:
-        - field: ExpExpeditionName
+      elements:
+        - column: ExpExpeditionName
     - header: Site Code
-      fields:
-        - field: ColCollectionEventCode
+      elements:
+        - column: ColCollectionEventCode
     - header: Collection Method
-      fields:
+      elements:
         - first: [ColCollectionMethod, LocSamplingMethod]
     - header: State
-      fields:
-        - field: LocProvinceStateTerritory
+      elements:
+        - column: LocProvinceStateTerritory
     - header: Nearest Named Place
-      fields:
-        - field: LocNearestNamedPlace
+      elements:
+        - column: LocNearestNamedPlace
     - header: Special Geographic Unit
-      fields:
-        - field: LocSpecialGeographicUnit
+      elements:
+        - column: LocSpecialGeographicUnit
     - header: Precise Location
-      fields:
-        - field: LocPreciseLocation
+      elements:
+        - column: LocPreciseLocation
     - header: Latitude (Decimal)
-      fields:
-        - field: LatPreferredCentroidLatDec
+      elements:
+        - column: LatPreferredCentroidLatDec
     - header: Longitude (Decimal)
-      fields:
-        - field: LatPreferredCentroidLongDec
+      elements:
+        - column: LatPreferredCentroidLongDec
     - header: Determination
-      fields:
-        - field: LatPreferredDetermination
+      elements:
+        - column: LatPreferredDetermination
     - header: Coordinate uncertainty (m)
-      fields:
-        - field: LatRadiusNumberic_tab
+      elements:
+        - column: LatRadiusNumberic_tab
     - header: Date Visited from
-      fields:
-        - field: ColDateVisitedFrom
+      elements:
+        - column: ColDateVisitedFrom
     - header: Date Visited to
-      fields:
-      - field: ColDateVisitedTo
+      elements:
+      - column: ColDateVisitedTo
     - header: Date collected
-      fields:
-          - field: PreDateCollected
+      elements:
+          - column: PreDateCollected
     - header: Collectors
       glue: ", "
-      fields:
+      elements:
         - table:
             tablename: LocCollectorsLocal_tab
-            fields:
-              - field: LocCollectorsLocal
+            elements:
+              - column: LocCollectorsLocal
     - header: Tissue Type
-      fields:
-        - field: BioTissueType
+      elements:
+        - column: BioTissueType
     - header: ABTC Record
-      fields:
-        - field: BioTissueRecordRef/SummaryData
+      elements:
+        - column: BioTissueRecordRef/SummaryData
     - header: Notes
-      fields:
-        - field: NotNotes
+      elements:
+        - column: NotNotes

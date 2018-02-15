@@ -37,7 +37,7 @@
         "additionalProperties": false,
         "required": [
           "header",
-          "fields"
+          "elements"
         ],
         "properties": {
           "header": {
@@ -49,15 +49,15 @@
           "rowend": {
             "type": "string"
           },
-          "fields": {
-            "$ref": "#/definitions/fields_ref"
+          "elements": {
+            "$ref": "#/definitions/elements_ref"
           }
         }
       }
     }
   },
   "definitions": {
-    "fields_ref": {
+    "elements_ref": {
       "type": "array",
       "anyOf": [
         {
@@ -67,7 +67,7 @@
         },
         {
           "required": [
-            "field"
+            "column"
           ]
         },
         {
@@ -109,7 +109,7 @@
             "type": "string",
             "minLength": 0
           },
-          "field": {
+          "column": {
             "type": "string",
             "minLength": 1
           },
@@ -140,7 +140,7 @@
             "required": [
               "condition",
               "target",
-              "fields"
+              "elements"
             ],
             "properties": {
               "condition": {
@@ -158,17 +158,17 @@
               "target": {
                 "type": "string"
               },
-              "fields": {
-                "$ref": "#/definitions/fields_ref"
+              "elements": {
+                "$ref": "#/definitions/elements_ref"
               },
               "otherwise": {
                 "type": "object",
                 "required": [
-                  "fields"
+                  "elements"
                 ],
                 "properties": {
-                  "fields": {
-                    "$ref": "#/definitions/fields_ref"
+                  "elements": {
+                    "$ref": "#/definitions/elements_ref"
                   }
                 }
               }
@@ -179,7 +179,7 @@
             "additionalProperties": false,
             "required": [
               "tablename",
-              "fields"
+              "elements"
             ],
             "properties": {
               "tablename": {
@@ -191,8 +191,8 @@
               "rowend": {
                 "type": "string"
               },
-              "fields": {
-                "$ref": "#/definitions/fields_ref"
+              "elements": {
+                "$ref": "#/definitions/elements_ref"
               }
             }
           },

@@ -4,78 +4,78 @@
 title: SAM Taxonomy Report
 columns:
     - header: Class
-      fields:
-        - field: ClaClass
+      elements:
+        - column: ClaClass
     - header: Subclass
-      fields:
-        - field: ClaSubclass
+      elements:
+        - column: ClaSubclass
     - header: Superorder
-      fields:
-        - field: ClaSuperorder
+      elements:
+        - column: ClaSuperorder
     - header: Order
-      fields:
-        - field: ClaOrder
+      elements:
+        - column: ClaOrder
     - header: Suborder
-      fields:
-        - field: ClaSuborder
+      elements:
+        - column: ClaSuborder
     - header: Infraorder
-      fields:
-        - field: ClaInfraorder
+      elements:
+        - column: ClaInfraorder
     - header: Superfamily
-      fields:
-        - field: ClaSuperfamily
+      elements:
+        - column: ClaSuperfamily
     - header: Family
-      fields:
-        - field: ClaFamily
+      elements:
+        - column: ClaFamily
     - header: Subfamily
-      fields:
-        - field: ClaSubfamily
+      elements:
+        - column: ClaSubfamily
     - header: Genus
-      fields:
-        - field: ClaGenus
+      elements:
+        - column: ClaGenus
     - header: Subgenus
-      fields:
-        - field: ClaSubgenus
+      elements:
+        - column: ClaSubgenus
     - header: Species
-      fields:
-        - field: ClaSpecies
+      elements:
+        - column: ClaSpecies
     - header: Subspecies
-      fields:
-        - field: ClaSubspecies
+      elements:
+        - column: ClaSubspecies
     - header: Author String
-      fields:
-        - field: AutAuthorString
+      elements:
+        - column: AutAuthorString
     - header: Scientific Name
-      fields:
-        - field: ClaScientificName[not(parent::ClaCurrentNameRef) and not(parent::RanParentRef)]
+      elements:
+        - column: ClaScientificName[not(parent::ClaCurrentNameRef) and not(parent::RanParentRef)]
     - header: Currently Accepted?
-      fields:
-        - field: ClaCurrentlyAccepted
+      elements:
+        - column: ClaCurrentlyAccepted
     - header: Current Name
-      fields:
+      elements:
         - conditional:
             condition: /text() = 'No'
             target: ClaCurrentlyAccepted
-            fields:
-              - field: ClaCurrentNameRef/ClaScientificName
+            elements:
+              - column: ClaCurrentNameRef/ClaScientificName
     - header: Common Name
-      fields:
+      elements:
         - multiple: ComName_tab
     - header: Occurrence Status (Australia)
-      fields:
-        - field: GeoOccurrenceStatus_tab
+      elements:
+        - column: GeoOccurrenceStatus_tab
     - header: Occurrence Status (South Australia)
-      fields:
-        - field: GeoOccurrenceStatusType_tab
+      elements:
+        - column: GeoOccurrenceStatusType_tab
     - header: Rank
-      fields:
-        - field: ClaRank
+      elements:
+        - column: ClaRank
     - header: Parent Taxon
-      fields:
-        - field: RanParentRef/ClaScientificName
+      elements:
+        - column: RanParentRef/ClaScientificName
     - header: Parent irn
-      fields:
-        - field: RanParentRef/irn
+      elements:
+        - column: RanParentRef/irn
     - header: EMu irn
-      fields:
-        - field: irn[not(parent::RanParentRef)]
+      elements:
+        - column: irn[not(parent::RanParentRef)]

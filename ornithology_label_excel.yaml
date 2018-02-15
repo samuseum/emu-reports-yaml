@@ -4,75 +4,75 @@
 title: Ornithology for birds labels
 columns:
     - header: regno
-      fields:
-          - field: CatBarcode
+      elements:
+          - column: CatBarcode
     - header: Identification
       glue: " "
-      fields:
+      elements:
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: ClaGenus
+            elements:
+              - column: ClaGenus
             otherwise:
-              fields:
-                - field: IdeCurrentGenusLocal
+              elements:
+                - column: IdeCurrentGenusLocal
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: IdeAcceptedRef/ClaSpecies
+            elements:
+              - column: IdeAcceptedRef/ClaSpecies
             otherwise:
-              fields:
-                - field: IdeCurrentSpeciesLocal
+              elements:
+                - column: IdeCurrentSpeciesLocal
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: ClaSubspecies
+            elements:
+              - column: ClaSubspecies
             otherwise:
-              fields:
-                - field: IdeCurrentSubspeciesLocal
+              elements:
+                - column: IdeCurrentSubspeciesLocal
     - header: "Collection Date"
-      fields:
-          - field: PreDateCollected
+      elements:
+          - column: PreDateCollected
     - header: "Collection Site"
       glue: ", "
-      fields:
-          - field: LocProvinceStateTerritory
-          - field: LocSpecialGeographicUnit
-          - field: LocPreciseLocation
+      elements:
+          - column: LocProvinceStateTerritory
+          - column: LocSpecialGeographicUnit
+          - column: LocPreciseLocation
     - header: Sex/Stage
       glue: " "
       rowend: "\n"
-      fields:
+      elements:
           - table:
               tablename: sexstage
-              fields:
-                - field: ZooSex
-                - field: ZooStage
+              elements:
+                - column: ZooSex
+                - column: ZooStage
     - header: Collector
       rowend: ", "
-      fields:
+      elements:
         - table:
             tablename: LocCollectorsRef_tab
-            fields:
+            elements:
               - conditional:
                   condition: /text() = 'Person'
                   target: NamPartyType
-                  fields:
-                    - field: NamFullName
+                  elements:
+                    - column: NamFullName
                   otherwise:
-                    fields:
+                    elements:
                       - conditional:
                           condition: /text() = 'Organisation'
                           target: NamPartyType
-                          fields:
-                            - field: NamOrganisation
+                          elements:
+                            - column: NamOrganisation
                           otherwise:
-                            fields:
+                            elements:
                               - conditional:
                                   condition: /text() = 'Collaboration'
                                   target: NamPartyType
-                                  fields:
-                                    - field: ColCollaborationName
+                                  elements:
+                                    - column: ColCollaborationName

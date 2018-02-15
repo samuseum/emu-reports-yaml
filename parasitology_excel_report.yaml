@@ -4,41 +4,41 @@
 title: Parasitology report
 columns:
     - header: Registration number
-      fields:
-        - field: CatPrefix
-        - field: CatRegNumber
+      elements:
+        - column: CatPrefix
+        - column: CatRegNumber
         - conditional:
             condition: /text() != ''
             target: CatSuffix
-            fields:
+            elements:
                 - string: "."
-                - field: CatSuffix
+                - column: CatSuffix
     - header: Host identification
       glue: " "
-      fields:
-        - field: HosTaxonRef_tab/tuple[1]/ClaGenus
-        - field: HosTaxonRef_tab/tuple[1]/ClaSpecies
-        - field: HosTaxonRef_tab/tuple[1]/ClaSubspecies
+      elements:
+        - column: HosTaxonRef_tab/tuple[1]/ClaGenus
+        - column: HosTaxonRef_tab/tuple[1]/ClaSpecies
+        - column: HosTaxonRef_tab/tuple[1]/ClaSubspecies
     - header: Parasite Group
-      fields:
-        - field: ParParasiteGroup
+      elements:
+        - column: ParParasiteGroup
     - header: Parasite identification
       glue: " "
-      fields:
-        - field: IdeCurrentTaxonRef/ClaGenus
-        - field: IdeCurrentTaxonRef/ClaSpecies
-        - field: IdeCurrentTaxonRef/ClaSubspecies
+      elements:
+        - column: IdeCurrentTaxonRef/ClaGenus
+        - column: IdeCurrentTaxonRef/ClaSpecies
+        - column: IdeCurrentTaxonRef/ClaSubspecies
     - header: Parasite ID comments
-      fields:
-        - field: IdeCurrentComments
+      elements:
+        - column: IdeCurrentComments
     - header: Type Status
       glue: " "
       rowend: " | "
-      fields:
+      elements:
         - table:
             tablename: typestatus
-            fields:
-              - field: CitTypeStatus
+            elements:
+              - column: CitTypeStatus
               - string: of
-              - field: ClaGenus
-              - field: ClaSpecies
+              - column: ClaGenus
+              - column: ClaSpecies

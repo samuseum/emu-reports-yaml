@@ -4,265 +4,265 @@
 title: Mammalogy Cetacean sightings report
 columns:
     - header: Prefix
-      fields:
-        - field: CatPrefix
+      elements:
+        - column: CatPrefix
     - header: Reg Number
-      fields:
-        - field: CatRegNumber
+      elements:
+        - column: CatRegNumber
     - header: Suffix
-      fields:
-        - field: CatSuffix
+      elements:
+        - column: CatSuffix
     - header: Registered by
-      fields:
-        - field: CatCataloguedByRef/SummaryData
+      elements:
+        - column: CatCataloguedByRef/SummaryData
     - header: Date Registered
-      fields:
-        - field: CatDateCatalogued
+      elements:
+        - column: CatDateCatalogued
     - header: Other Numbers
       glue: ", "
-      fields:
+      elements:
         - multiple: CatOtherNumbersValue
     - header: Family
-      fields:
+      elements:
         - conditional:
             condition: "/*[text()]"
             target: IdeAcceptedRef
-            fields:
+            elements:
               - conditional:
                   condition: "/text()"
                   target: ClaFamily
-                  fields:
-                    - field: ClaFamily
+                  elements:
+                    - column: ClaFamily
                   otherwise:
-                    fields:
+                    elements:
                       - string: "Family"
             otherwise:
-              fields:
+              elements:
                 - conditional:
                     condition: "/text()"
                     target: IdeCurrentFamilyLocal
-                    fields:
-                      - field: IdeCurrentFamilyLocal
+                    elements:
+                      - column: IdeCurrentFamilyLocal
                     otherwise:
-                      fields:
+                      elements:
                         - string: "Family"
     - header: Genus
-      fields:
+      elements:
         - conditional:
             condition: "/*[text()]"
             target: IdeAcceptedRef
-            fields:
+            elements:
               - conditional:
                   condition: "/text()"
                   target: ClaGenus
-                  fields:
-                    - field: ClaGenus
+                  elements:
+                    - column: ClaGenus
                   otherwise:
-                    fields:
+                    elements:
                      - string: "Gen."
             otherwise:
-              fields:
+              elements:
                 - conditional:
                     condition: "/text()"
                     target: IdeCurrentGenusLocal
-                    fields:
-                      - field: IdeCurrentGenusLocal
+                    elements:
+                      - column: IdeCurrentGenusLocal
                     otherwise:
-                      fields:
+                      elements:
                         - string: "Gen."
     - header: Species
-      fields:
+      elements:
         - conditional:
             condition: "/*[text()]"
             target: IdeAcceptedRef
-            fields:
+            elements:
               - conditional:
                   condition: "/text()"
                   target: ClaSpecies
-                  fields:
-                    - field: ClaSpecies
+                  elements:
+                    - column: ClaSpecies
                   otherwise:
-                    fields:
+                    elements:
                       - string: "sp."
             otherwise:
-              fields:
+              elements:
                 - conditional:
                     condition: "/text()"
                     target: IdeCurrentSpeciesLocal
-                    fields:
-                      - field: IdeCurrentSpeciesLocal
+                    elements:
+                      - column: IdeCurrentSpeciesLocal
                     otherwise:
-                      fields:
+                      elements:
                         - string: "sp."
     - header: ID Confidence
-      fields:
-        - field: IdeCurrentConfidence
+      elements:
+        - column: IdeCurrentConfidence
     - header: ID Comments
-      fields:
-        - field: IdeCurrentComments
+      elements:
+        - column: IdeCurrentComments
     - header: Identified by
-      fields:
-        - field: IdeCurrentIdentifiedByLocal
+      elements:
+        - column: IdeCurrentIdentifiedByLocal
     - header: Date Identified
-      fields:
-        - field: IdeCurrentDateIdentified
+      elements:
+        - column: IdeCurrentDateIdentified
     - header: Latitude (DMS)
-      fields:
-        - field: tuple[1]/LatLatitude
+      elements:
+        - column: tuple[1]/LatLatitude
     - header: Longitude (DMS)
-      fields:
-        - field: tuple[1]/LatLongitude
+      elements:
+        - column: tuple[1]/LatLongitude
     - header: Latitude Dec
-      fields:
-        - field: tuple[1]/LatLatitudeDecimal
+      elements:
+        - column: tuple[1]/LatLatitudeDecimal
     - header: Longitude Dec
-      fields:
-        - field: tuple[1]/LatLongitudeDecimal
+      elements:
+        - column: tuple[1]/LatLongitudeDecimal
     - header: Precision
-      fields:
-        - field: tuple[1]/LatRadiusVerbatim
+      elements:
+        - column: tuple[1]/LatRadiusVerbatim
     - header: Datum
-      fields:
-        - field: LatDatum_tab[1]
+      elements:
+        - column: LatDatum_tab[1]
     - header: Country
-      fields:
-        - field: LocCountry
+      elements:
+        - column: LocCountry
     - header: Province/State/Territory
-      fields:
-        - field: LocProvinceStateTerritory
+      elements:
+        - column: LocProvinceStateTerritory
     - header: Nearest Named Place
-      fields:
-        - field: LocNearestNamedPlace
+      elements:
+        - column: LocNearestNamedPlace
     - header: Precise Location
-      fields:
-        - field: LocPreciseLocation
+      elements:
+        - column: LocPreciseLocation
     - header: Special Geographic Unit
-      fields:
-        - field: LocSpecialGeographicUnit
+      elements:
+        - column: LocSpecialGeographicUnit
     - header: Ocean
-      fields:
-        - field: LocOcean
+      elements:
+        - column: LocOcean
     - header: Observed By
-      fields:
-        - field: SigObservedByRef/SummaryData
+      elements:
+        - column: SigObservedByRef/SummaryData
     - header: Reported By
-      fields:
-        - field: SigReportedByRef/SummaryData
+      elements:
+        - column: SigReportedByRef/SummaryData
     - header: Date Observed
-      fields:
-        - field: SigDateObserved
+      elements:
+        - column: SigDateObserved
     - header: Date Observed Verbatim
-      fields:
-        - field: SigDateObservedVerbatim
+      elements:
+        - column: SigDateObservedVerbatim
     - header: Time Observed
-      fields:
-        - field: SigTimeObserved
+      elements:
+        - column: SigTimeObserved
     - header: Time Observed Verbatim
-      fields:
-        - field: SigTimeObservedVerbatim
+      elements:
+        - column: SigTimeObservedVerbatim
     - header: Date Reported
-      fields:
-        - field: SigDateReported
+      elements:
+        - column: SigDateReported
     - header: Date Reported Verbatim
-      fields:
-        - field: SigDateReportedVerbatim
+      elements:
+        - column: SigDateReportedVerbatim
     - header: Distance and direction from Observer
-      fields:
-        - field: SigDisDirFromObserver
+      elements:
+        - column: SigDisDirFromObserver
     - header: Distance and Direction from Shore
-      fields:
-        - field: SigDisDirFromShore
+      elements:
+        - column: SigDisDirFromShore
     - header: How Observed
-      fields:
-        - field: SigHowObserved
+      elements:
+        - column: SigHowObserved
     - header: Comments
-      fields:
-        - field: SigObservationComments
+      elements:
+        - column: SigObservationComments
     - header: Weather
-      fields:
-        - field: SigWeather
+      elements:
+        - column: SigWeather
     - header: Sea Conditions
-      fields:
-        - field: SigSeaConditions
+      elements:
+        - column: SigSeaConditions
     - header: Survey Name
-      fields:
-        - field: SigSurveyName
+      elements:
+        - column: SigSurveyName
     - header: Survey Type
-      fields:
-        - field: SigSurveyType
+      elements:
+        - column: SigSurveyType
     - header: Survey Platform
-      fields:
-        - field: SigSurveyPlatform
+      elements:
+        - column: SigSurveyPlatform
     - header: Survey Comments
-      fields:
-        - field: SigSurveyComments
+      elements:
+        - column: SigSurveyComments
     - header: Max. Total Number Observed
-      fields:
-        - field: SigTotalNumberObserved
+      elements:
+        - column: SigTotalNumberObserved
     - header: Number of Young
-      fields:
-        - field: SigNumberOfYoung
+      elements:
+        - column: SigNumberOfYoung
     - header: Identified Individuals
-      fields:
-        - field: SigIdentifiedIndividuals
+      elements:
+        - column: SigIdentifiedIndividuals
     - header: Number/Size Comments
-      fields:
-        - field: SigNumberSizeComments
+      elements:
+        - column: SigNumberSizeComments
     - header: Head Shape
-      fields:
-        - field: SigHeadShape
+      elements:
+        - column: SigHeadShape
     - header: Head Other Features
-      fields:
-        - field: SigHeadOtherFeatures
+      elements:
+        - column: SigHeadOtherFeatures
     - header: Blow Height
-      fields:
-        - field: SigBlowHeight
+      elements:
+        - column: SigBlowHeight
     - header: Blow Type
-      fields:
-        - field: SigBlowType
+      elements:
+        - column: SigBlowType
     - header: Flipper Size
-      fields:
-        - field: SigFlipperSize
+      elements:
+        - column: SigFlipperSize
     - header: Flipper Shape
-      fields:
-        - field: SigFlipperShape
+      elements:
+        - column: SigFlipperShape
     - header: Fluke Trailing Edge
-      fields:
-        - field: SigFlukeTrailingEdge
+      elements:
+        - column: SigFlukeTrailingEdge
     - header: Fluke Notch
-      fields:
-        - field: SigFlukeNotch
+      elements:
+        - column: SigFlukeNotch
     - header: Dorsal Fin Size
-      fields:
-        - field: SigDorsalFinSize
+      elements:
+        - column: SigDorsalFinSize
     - header: Dorsal Fin Shape
-      fields:
-        - field: SigDorsalFinShape
+      elements:
+        - column: SigDorsalFinShape
     - header: Dorsal Fin Position
-      fields:
-        - field: SigDorsalFinPosition
+      elements:
+        - column: SigDorsalFinPosition
     - header: Description Comments
-      fields:
-        - field: SigDescriptionComments
+      elements:
+        - column: SigDescriptionComments
     - header: Social Group
-      fields:
-        - field: SigSocialGroup
+      elements:
+        - column: SigSocialGroup
     - header: Images
-      fields:
-        - field: SigImages
+      elements:
+        - column: SigImages
     - header: Images Attached
-      fields:
-        - field: SigImagesAttached
+      elements:
+        - column: SigImagesAttached
     - header: Behaviour
-      fields:
-        - field: SigBehaviour
+      elements:
+        - column: SigBehaviour
     - header: Multimedia
       glue: " | "
-      fields:
+      elements:
         - multiple: MulTitle
     - header: Notes
-      fields:
-        - field: NotNotes
+      elements:
+        - column: NotNotes
     - header: Itemised Notes
-      fields:
-        - field: NotText0
+      elements:
+        - column: NotText0

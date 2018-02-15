@@ -4,114 +4,114 @@
 title: Herpetology report
 columns:
     - header: Registration Number
-      fields:
-          - field: CatPrefix
-          - field: CatRegNumber
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
           - conditional:
               condition: /text() != ''
               target: CatSuffix
-              fields:
+              elements:
                   - string: "."
-                  - field: CatSuffix
+                  - column: CatSuffix
     - header: Other Numbers
-      fields:
+      elements:
         - table:
             tablename: OtherNumbers
             glue: " "
             rowend: " "
-            fields:
-                - field: CatOtherNumbersSource
-                - field: CatOtherNumbersType
-                - field: CatOtherNumbersValue
+            elements:
+                - column: CatOtherNumbersSource
+                - column: CatOtherNumbersType
+                - column: CatOtherNumbersValue
     - header: Valid Record
-      fields:
-        - field: CatValidRecord
+      elements:
+        - column: CatValidRecord
     - header: Family
-      fields:
+      elements:
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: ClaFamily
+            elements:
+              - column: ClaFamily
             otherwise:
-              fields:
-                - field: IdeCurrentFamilyLocal
+              elements:
+                - column: IdeCurrentFamilyLocal
     - header: Genus
-      fields:
+      elements:
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: ClaGenus
+            elements:
+              - column: ClaGenus
             otherwise:
-              fields:
-                - field: IdeCurrentGenusLocal
+              elements:
+                - column: IdeCurrentGenusLocal
     - header: Species
-      fields:
+      elements:
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: IdeAcceptedRef/ClaSpecies
+            elements:
+              - column: IdeAcceptedRef/ClaSpecies
             otherwise:
-              fields:
-                - field: IdeCurrentSpeciesLocal
+              elements:
+                - column: IdeCurrentSpeciesLocal
     - header: Subspecies
-      fields:
+      elements:
         - conditional:
             condition: /*[text()]
             target: IdeAcceptedRef
-            fields:
-              - field: ClaSubspecies
+            elements:
+              - column: ClaSubspecies
             otherwise:
-              fields:
-                - field: IdeCurrentSubspeciesLocal
+              elements:
+                - column: IdeCurrentSubspeciesLocal
     - header: Collection Date
-      fields:
-        - field: PreDateCollected
+      elements:
+        - column: PreDateCollected
     - header: Country
-      fields:
-        - field: LocCountry
+      elements:
+        - column: LocCountry
     - header: State
-      fields:
-        - field: LocProvinceStateTerritory
+      elements:
+        - column: LocProvinceStateTerritory
     - header: Nearest Named Place
-      fields:
-        - field: LocNearestNamedPlace
+      elements:
+        - column: LocNearestNamedPlace
     - header: Precise Location
-      fields:
-        - field: LocPreciseLocation
+      elements:
+        - column: LocPreciseLocation
     - header: Latitude (DMS)
-      fields:
-        - field: LatPreferredCentroidLatitude
+      elements:
+        - column: LatPreferredCentroidLatitude
     - header: Longitude (DMS)
-      fields:
-        - field: LatPreferredCentroidLongitude
+      elements:
+        - column: LatPreferredCentroidLongitude
     - header: Latitude (Decimal)
-      fields:
-        - field: LatPreferredCentroidLatDec
+      elements:
+        - column: LatPreferredCentroidLatDec
     - header: Longitude (Decimal)
-      fields:
-        - field: LatPreferredCentroidLongDec
+      elements:
+        - column: LatPreferredCentroidLongDec
     - header: Collector
       glue: "; "
-      fields:
+      elements:
         - multiple: LocCollectorsRef_tab/tuple/SummaryData
     - header: Notes
-      fields:
-        - field: NotNotes
+      elements:
+        - column: NotNotes
     - header: Itemised Notes
       glue: ": "
       rowend: "\n"
-      fields:
+      elements:
         - table:
             tablename: ItemisedNotes
-            fields:
-              - field: NotType
-              - field: NotText
+            elements:
+              - column: NotType
+              - column: NotText
     - header: Location
-      fields:
-        - field: LocPermanentLocationRef/SummaryData
+      elements:
+        - column: LocPermanentLocationRef/SummaryData
     - header: ABTC Number
-      fields:
-        - field: BioTissueRecordRef/SummaryData
+      elements:
+        - column: BioTissueRecordRef/SummaryData

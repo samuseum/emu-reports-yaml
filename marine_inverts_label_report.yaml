@@ -4,120 +4,120 @@
 title: Marine Invertebrates Label report
 columns:
     - header: Registration Number
-      fields: 
-          - field: CatPrefix[not(ancestor::BioTissueRecordRef)]
-          - field: CatRegNumber[not(ancestor::BioTissueRecordRef)]
+      elements: 
+          - column: CatPrefix[not(ancestor::BioTissueRecordRef)]
+          - column: CatRegNumber[not(ancestor::BioTissueRecordRef)]
           - conditional:
               condition: /text()
               target: CatSuffix[not(ancestor::BioTissueRecordRef)]
-              fields:
+              elements:
                 - string: "."
-                - field: CatSuffix[not(ancestor::BioTissueRecordRef)]    
+                - column: CatSuffix[not(ancestor::BioTissueRecordRef)]    
     - header: Barcode
-      fields:
-          - field: CatBarcode
+      elements:
+          - column: CatBarcode
     - header: Specimen Count
-      fields:
-          - field: CatSpecimenCount
+      elements:
+          - column: CatSpecimenCount
     - header: Photo Index No.
-      fields:
-          - field: MarPhotoIndexNumber
+      elements:
+          - column: MarPhotoIndexNumber
     - header: Collection Details
       glue: ", "
-      fields:
-          - field: BioEventRef/SummaryData
+      elements:
+          - column: BioEventRef/SummaryData
           - conditional:
                 condition: /text()
                 target: MarDepthFromMet
                 glue: " "    
-                fields:
+                elements:
                     - range:
                         lower: MarDepthFromMet
                         higher: MarDepthToMet
                     - string: "m"
                 otherwise:
-                    fields:
+                    elements:
                         - conditional:
                             condition: /text()
                             glue: " "    
                             target: AquDepthFromMet 
-                            fields:    
+                            elements:    
                                 - range: 
                                     lower: AquDepthFromMet
                                     higher: AquDepthToMet
                                 - string: "m"
-          - field: MarCollectionNotes
-          - field: MarHabitat
-          - field: MarLiveObservation
-          - field: ColCollectionMethod
-          - field: LocSamplingMethod
+          - column: MarCollectionNotes
+          - column: MarHabitat
+          - column: MarLiveObservation
+          - column: ColCollectionMethod
+          - column: LocSamplingMethod
           - table:
                 tablename: OtherNumbers
                 glue: " "
                 rowend: " "
-                fields:
-                    - field: CatOtherNumbersSource
-                    - field: CatOtherNumbersType
-                    - field: CatOtherNumbersValue
+                elements:
+                    - column: CatOtherNumbersSource
+                    - column: CatOtherNumbersType
+                    - column: CatOtherNumbersValue
     - header: Taxon
       glue: " "
-      fields:
-          - field: identification/tuple[1]/ClaGenus
-          - field: identification/tuple[1]/ClaSpecies
-          - field: identification/tuple[1]/ClaSubspecies
+      elements:
+          - column: identification/tuple[1]/ClaGenus
+          - column: identification/tuple[1]/ClaSpecies
+          - column: identification/tuple[1]/ClaSubspecies
     - header: Family
-      fields:
-          - field: identification/tuple[1]/ClaFamily
+      elements:
+          - column: identification/tuple[1]/ClaFamily
     - header: Higher Classification
       glue: " "
-      fields:
-          - field: identification/tuple[1]/ClaPhylum
-          - field: identification/tuple[1]/ClaSubphylum
-          - field: identification/tuple[1]/ClaClass
+      elements:
+          - column: identification/tuple[1]/ClaPhylum
+          - column: identification/tuple[1]/ClaSubphylum
+          - column: identification/tuple[1]/ClaClass
     - header: Identified By
-      fields:
-          - field: identification/tuple[1]/SummaryData
+      elements:
+          - column: identification/tuple[1]/SummaryData
     - header: Date Identified
-      fields:
-          - field: identification/tuple[1]/IdeDateIdentified
+      elements:
+          - column: identification/tuple[1]/IdeDateIdentified
     - header: Collectors
       glue: ", "
-      fields:
+      elements:
           - table:
               tablename: LocCollectorsRef_tab
-              fields:
-                  - field: SummaryData[ancestor::LocCollectorsRef_tab]
+              elements:
+                  - column: SummaryData[ancestor::LocCollectorsRef_tab]
     - header: Date Collected
-      fields:
-          - field: PreDateCollected
+      elements:
+          - column: PreDateCollected
     - header: ABTC No.
-      fields:
+      elements:
           - conditional:
               condition: /*[text()]
               target: BioTissueRecordRef
-              fields:
-                - field: BioTissueRecordRef/CatPrefix
-                - field: BioTissueRecordRef/CatRegNumber
+              elements:
+                - column: BioTissueRecordRef/CatPrefix
+                - column: BioTissueRecordRef/CatRegNumber
                 - conditional:
                     condition: /text()
                     target: BioTissueRecordRef/CatSuffix
-                    fields:
+                    elements:
                       - string: "."
-                      - field: BioTissueRecordRef/CatSuffix
+                      - column: BioTissueRecordRef/CatSuffix
     - header: Type status
       rowend: " | "
-      fields:
+      elements:
         - table:
             tablename: typestatusinfo
-            fields:
-              - field: CitTypeStatus    
+            elements:
+              - column: CitTypeStatus    
     - header: Type taxon
       rowend: " | "
       glue: " "
-      fields: 
+      elements: 
         - table:
             tablename: typestatusinfo
-            fields:
-              - field: ClaGenus
-              - field: ClaSpecies
-              - field: ClaSubSpecies
+            elements:
+              - column: ClaGenus
+              - column: ClaSpecies
+              - column: ClaSubSpecies

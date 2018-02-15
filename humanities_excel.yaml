@@ -4,85 +4,85 @@
 title: South Australian Museum
 columns:
     - header: Registration Number
-      fields:
-          - field: CatPrefix
-          - field: CatRegNumber
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
           - conditional:
               condition: /text() != ''
               target: CatSuffix
-              fields:
+              elements:
                   - string: "."
-                  - field: CatSuffix
+                  - column: CatSuffix
     - header: Category
-      fields:
+      elements:
         - table: 
             tablename: SumCategory_tab
-            fields:
-                - field: SumCategory    
+            elements:
+                - column: SumCategory    
     - header: Description
-      fields:
-        - field: ObjDescription
+      elements:
+        - column: ObjDescription
     - header: Source
-      fields:
+      elements:
           - table:
                 tablename: AcqNameSourceRef_tab
-                fields:
-                  - field: SummaryData    
+                elements:
+                  - column: SummaryData    
     - header: Country
-      fields:
-        - field: LocCountry
+      elements:
+        - column: LocCountry
     - header: Province/State/Territory
-      fields:
-        - field: LocProvinceStateTerritory
+      elements:
+        - column: LocProvinceStateTerritory
     - header: Location
-      fields:
-        - field: LocPreciseLocation
+      elements:
+        - column: LocPreciseLocation
     - header: Nearest Named Place
-      fields:
-        - field: LocNearestNamedPlace                    
+      elements:
+        - column: LocNearestNamedPlace                    
     - header: Cultural Associations
       rowend: " | "
-      fields:
+      elements:
           - table:
               tablename: culturalassociations
-              fields:
-                - field: ObjCulturalAssocRole_tab  
+              elements:
+                - column: ObjCulturalAssocRole_tab  
                 - string: ": "  
-                - field: SummaryData    
+                - column: SummaryData    
     - header: Collector
-      fields:          
+      elements:          
         - multiple: LocCollectorsLocal_tab
     - header: Date Collected
-      fields:
-        - field: PreDateCollected
+      elements:
+        - column: PreDateCollected
     - header: Date Acquired
-      fields:
-        - field: AcqAcquisitionDate
+      elements:
+        - column: AcqAcquisitionDate
     - header: Current Storage location
-      fields:
-        - field: LocCurrentLocationRef/SummaryData
+      elements:
+        - column: LocCurrentLocationRef/SummaryData
     - header: Permanent Storage location
-      fields:
-        - field: LocPermanentLocationRef/SummaryData
+      elements:
+        - column: LocPermanentLocationRef/SummaryData
     - header: Notes
-      fields:
-        - field: NotNotes
+      elements:
+        - column: NotNotes
     - header: Itemised notes
       glue: " "
       rowend: " | "
-      fields:
+      elements:
         - table:
             tablename: itemisednotes
-            fields:
-              - field: NotType
-              - field: NotText0        
+            elements:
+              - column: NotType
+              - column: NotText0        
     - header: Other Numbers
       glue: " "
       rowend: " | "
-      fields:
+      elements:
           - table:
               tablename: othernumbers
-              fields:
-                - field: CatOtherNumbersSource
-                - field: CatOtherNumbersKind  
-                - field: CatOtherNumbersValue
+              elements:
+                - column: CatOtherNumbersSource
+                - column: CatOtherNumbersKind  
+                - column: CatOtherNumbersValue

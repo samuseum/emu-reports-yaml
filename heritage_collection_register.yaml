@@ -4,80 +4,80 @@
 title: Heritage Collection Asset Register report
 columns:
     - header: Registration Number
-      fields:
-          - field: CatPrefix
-          - field: CatRegNumber
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
           - conditional:
               condition: /text() != ''
               target: CatSuffix
-              fields:
+              elements:
                   - string: "."
-                  - field: CatSuffix
+                  - column: CatSuffix
     - header: Collection
-      fields:
-        - field: CatCollectionName
+      elements:
+        - column: CatCollectionName
     - header: Description
       glue: " "
-      fields:
-        - field: CatObjectType
-        - field: recordsummarydata
+      elements:
+        - column: CatObjectType
+        - column: recordsummarydata
     - header: Acquired from
-      fields:
+      elements:
         - conditional:
             condition:
             target: AcqNamSourceRef_tab/SummaryData
-            fields:
-              - field: AcqNamSourceRef_tab/SummaryData
+            elements:
+              - column: AcqNamSourceRef_tab/SummaryData
             otherwise:
-              fields:
+              elements:
                 - table:
                     tablename: LocCollectorsRef_tab
-                    fields:
-                      - field: SummaryData
+                    elements:
+                      - column: SummaryData
     - header: How Acquired
-      fields:
+      elements:
         - conditional:
             condition: /text() != ''
             target: AcqHowAcquired
-            fields:
-              - field: AcqHowAcquired
+            elements:
+              - column: AcqHowAcquired
             otherwise:
-              fields:
+              elements:
                 - string: Donation
     - header: Date Acquired
-      fields:
-        - field: AcqAcquisitionDate
+      elements:
+        - column: AcqAcquisitionDate
     - header: Date Registered
-      fields:
+      elements:
         - conditional:
             condition: /text() != ''
             target: CatDateCatalogued
-            fields:
-              - field: CatDateCatalogued
+            elements:
+              - column: CatDateCatalogued
             otherwise:
-              fields:
-                - field: AdmDateInserted
+              elements:
+                - column: AdmDateInserted
     - header: Inserted by
-      fields:
+      elements:
         - string: "[insert name of person filling in form]"
     - header: Value
-      fields:
-        - field: tuple[1]/ValValuationAmount
+      elements:
+        - column: tuple[1]/ValValuationAmount
     - header: Currency
-      fields:
+      elements:
         - string: AUD
     - header: Valuation Method
-      fields:
-        - field: tuple[1]/ValReasonForValuation
+      elements:
+        - column: tuple[1]/ValReasonForValuation
     - header: Valued by
-      fields:
-        - field: tuple[1]/ValValuedByRef/SummaryData
+      elements:
+        - column: tuple[1]/ValValuedByRef/SummaryData
     - header: "10 digit GL code"
-      fields:
+      elements:
         - string: ""
     - header: "Supporting Docs Y/N"
-      fields:
+      elements:
         - string: ""
     - header: Comments
-      fields:
+      elements:
         - string: ""
