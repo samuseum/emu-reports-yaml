@@ -1,6 +1,10 @@
-*.pyc
 *.swp
 *.csv
 *.xml
 *.zip
 *.xlsx
+
+.cache/
+
+__pycache__/
+*.py[cod]

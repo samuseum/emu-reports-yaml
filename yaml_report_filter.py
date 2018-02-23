@@ -63,8 +63,7 @@ def cell_table(table_input, field, glue="", rowend=""):
     ...         </table>
     ...     </record>'''
     >>> field = {
-    ...             'tablename':
-    ...             'table',
+    ...             'tablename': 'table',
     ...             'elements': [
     ...                         {
     ...                             'column': 'thisfield'
@@ -93,7 +92,7 @@ def cell_table(table_input, field, glue="", rowend=""):
 
     if 'glue' in field:
         glue = field["glue"]
-    if rowend in field:
+    if 'rowend' in field:
         rowend = field["rowend"]
     table_rows_path = table_path + "/tuple"
     rows = table_input.xpath(table_rows_path)
