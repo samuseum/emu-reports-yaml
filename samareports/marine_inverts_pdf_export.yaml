@@ -7,118 +7,118 @@ columns:
     - header: Registration Number
       glue: " "
       elements:
-          - column: CatPrefix
-          - column: CatRegNumber
+          - column: CatPrefix[not(ancestor::BioTissueRecordRef)]
+          - column: CatRegNumber[not(ancestor::BioTissueRecordRef)]
           - conditional:
               condition: /text()
-              target: CatSuffix
+              target: CatSuffix[not(ancestor::BioTissueRecordRef)]
               elements:
-                  - string: "."
-                  - column: CatSuffix
+                - string: "."
+                - column: CatSuffix[not(ancestor::BioTissueRecordRef)]  
           - conditional:
-               condition: /text()
-               target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
-               elements:
+              condition: /text()
+              target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
+              elements:
                    - string: "<i>"
           - column: tuple[1]/ClaGenus
           - column: tuple[1]/ClaSpecies
           - column: tuple[1]/ClaSubspecies
           - conditional:
-               condition: /text()
-               target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
-               elements:
+              condition: /text()
+              target: "tuple[1]/ClaGenus | tuple[1]/ClaSpecies | tuple[1]/ClaSubspecies"
+              elements:
                    - string: "</i>"
     - header: Collection Details
       glue: ", "
       elements:
           - column: BioEventRef/SummaryData
           - conditional:
-                condition: /text()
-                target: "MarDepthFromMet | MarDepthToMet | BioEventRef/AquDepthFromMet | BioEventRef/AquDepthToMet"
-                glue: ""
-                elements:
-                    - conditional:
-                        condition: /text()
-                        target: "MarDepthFromMet | MarDepthToMet"
-                        elements:
-                            - range:
-                                lower: MarDepthFromMet
-                                higher: MarDepthToMet
-                        otherwise:
-                          elements:
-                            - range: 
-                                lower: AquDepthFromMet
-                                higher: AquDepthToMet
-                    - string: "m"
+              condition: /text()
+              target: "MarDepthFromMet | MarDepthToMet | BioEventRef/AquDepthFromMet | BioEventRef/AquDepthToMet"
+              glue: ""
+              elements:
+                - conditional:
+                    condition: /text()
+                    target: "MarDepthFromMet | MarDepthToMet"
+                    elements:
+                      - range:
+                          lower: MarDepthFromMet
+                          higher: MarDepthToMet
+                    otherwise:
+                      elements:
+                        - range: 
+                            lower: AquDepthFromMet
+                            higher: AquDepthToMet
+                - string: "m"
           - column: MarCollectionNotes
           - column: MarHabitat
           - column: MarLiveObservation
           - column: ColCollectionMethod
           - column: LocSamplingMethod
           - table:
-                tablename: othernumbers
-                glue: " "
-                rowend: " "
-                elements:
-                    - column: CatOtherNumbersSource
-                    - column: CatOtherNumbersType
-                    - column: CatOtherNumbersValue
+              tablename: othernumbers
+              glue: " "
+              rowend: " "
+              elements:
+                  - column: CatOtherNumbersSource
+                  - column: CatOtherNumbersType
+                  - column: CatOtherNumbersValue
           - column: PreDateCollected
     - header: Taxon
       glue: " "
       elements:
-          - string: <b>family:</b>
-          - column: "tuple[1]/ClaFamily"
-          - string: <b>higher classification:</b>
-          - column: "tuple[1]/ClaPhylum"
-          - column: "tuple[1]/ClaSubphylum"
-          - column: "tuple[1]/ClaClass"
+        - string: <b>family:</b>
+        - column: "tuple[1]/ClaFamily"
+        - string: <b>higher classification:</b>
+        - column: "tuple[1]/ClaPhylum"
+        - column: "tuple[1]/ClaSubphylum"
+        - column: "tuple[1]/ClaClass"
     - header: Identifier
       glue: " "
       elements:
-          - conditional:
-              condition: "/*[text()]"
-              target: "SummaryData[ancestor::identification/tuple[1]]"
-              elements:
-                  - string: <b>identifier:</b>
-                  - column: "SummaryData[ancestor::identification/tuple[1]]"
-          - conditional:
-              condition: /text()
-              target: "IdeDateIdentified[ancestor::identification/tuple[1]]"
-              elements:
-                  - string: <b>date identified:</b>
-                  - column: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+        - conditional:
+            condition: "/*[text()]"
+            target: "SummaryData[ancestor::identification/tuple[1]]"
+            elements:
+                - string: <b>identifier:</b>
+                - column: "SummaryData[ancestor::identification/tuple[1]]"
+        - conditional:
+            condition: /text()
+            target: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+            elements:
+                - string: <b>date identified:</b>
+                - column: "IdeDateIdentified[ancestor::identification/tuple[1]]"
     - header: Collectors
       glue: ", "
       elements:
-          - table:
-              tablename: LocCollectorsRef_tab
-              elements:
-                  - column: "SummaryData[ancestor::LocCollectorsRef_tab]"
+        - table:
+            tablename: LocCollectorsRef_tab
+            elements:
+                - column: "SummaryData[ancestor::LocCollectorsRef_tab]"
     - header: ABTC No.
       elements:
-          - column: "CatPrefix[ancestor::BioTissueRecordRef]"
-          - column: "CatRegNumber[ancestor::BioTissueRecordRef]"
-          - conditional:
-              condition: /text()
-              target: "CatSuffix[ancestor::BioTissueRecordRef]"
-              elements:
-                  - string: "."
-                  - column: "CatSuffix[ancestor::BioTissueRecordRef]"
+        - column: "CatPrefix[ancestor::BioTissueRecordRef]"
+        - column: "CatRegNumber[ancestor::BioTissueRecordRef]"
+        - conditional:
+            condition: /text()
+            target: "CatSuffix[ancestor::BioTissueRecordRef]"
+            elements:
+                - string: "."
+                - column: "CatSuffix[ancestor::BioTissueRecordRef]"
     - header: numbers
       glue: " "
       elements:
-           - conditional:
-               condition: /text()
-               target: CatSpecimenCount
-               elements:
-                   - string: "<b>specimen count: </b>"
-                   - column: CatSpecimenCount
-           - conditional:
-               condition: /text()
-               target: MarPhotoIndexNumber
-               elements:
-                   - string: Photo Index No.
-                   - column: MarPhotoIndexNumber
-           - string: "<b>irn:</b>"
-           - column: irn
+         - conditional:
+             condition: /text()
+             target: CatSpecimenCount
+             elements:
+                 - string: "<b>specimen count: </b>"
+                 - column: CatSpecimenCount
+         - conditional:
+             condition: /text()
+             target: MarPhotoIndexNumber
+             elements:
+                 - string: Photo Index No.
+                 - column: MarPhotoIndexNumber
+         - string: "<b>irn:</b>"
+         - column: irn
