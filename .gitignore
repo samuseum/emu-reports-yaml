@@ -3,7 +3,7 @@
 *.xml
 *.zip
 *.xlsx
-
+*~
 .cache/
 
 __pycache__/
