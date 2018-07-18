@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-
 import argparse
 import zipfile
 import os.path
@@ -202,12 +201,10 @@ def cell_conditional(conditional_input, field, glue="", rowend=""):
     return condition_string
 
 
-def cell_range(input_data, field, glue, rowend):
+def cell_range(input_data, field):
     """returns a string of the range between higher and lower
     input_data: ElementTree record
     field: dict {'lower': 'lower value', 'higher': 'higher value'}
-    glue: string
-    rowend: string
     >>> field = {
     ...         'higher': 'top',
     ...          'lower': 'bottom'
@@ -218,19 +215,22 @@ def cell_range(input_data, field, glue, rowend):
     ...         <bottom>low</bottom>
     ...     </record>'''
     >>> cell_range(et.fromstring(xml_string),
-    ...                          field,
-    ...                          "glue",
-    ...                          "rowend")
-    'lowgluehigh'
+    ...                          field)
+    'low-high'
     >>> xml_string = '''
     ...     <record>
+    ...         <bottom></bottom>
     ...         <top>only high</top>
     ...     </record>'''
     >>> cell_range(et.fromstring(xml_string),
-    ...                          field,
-    ...                          "glue",
-    ...                          "rowend")
+    ...                          field)
     'only high'
+    >>> xml_string = '''
+    ...     <record>
+    ...         <bottom>only low</bottom>
+    ...     </record>'''
+    >>> cell_range(et.fromstring(xml_string), field)
+    'only low'
     """
     if 'lower' not in field or 'higher' not in field:
         error = ("error: range field %s must have both "
@@ -242,16 +242,14 @@ def cell_range(input_data, field, glue, rowend):
 
     lower = cell_column(input_data, low)
     higher = cell_column(input_data, high)
-    if glue == '':
-        if 'glue' in field:
-            glue = field["glue"]
-        else:
-            glue = " - "
-    if not lower and not higher:
+    glue = "-"
+    if lower == '' and higher  == '':
         return
-    elif not higher:
+    elif higher == '':
         return lower
-    elif not lower or lower == higher:
+    elif lower == '':
+        return higher
+    elif lower == higher: 
         return higher
     else:
         return "%s%s%s" % (lower, glue, higher)
@@ -304,11 +302,12 @@ def cell_xpath(et_elem, query):
     element et_elem.
     >>> xml_string = '''
     ...     <record>
-    ...         <thisfield>value</thisfield>
+    ...         <thisfield>4</thisfield>
+    ...         <thisfield>5</thisfield>
     ...     </record>'''
-    >>> query = "thisfield/text()"
+    >>> query = "sum((//thisfield)[number(.) = .])"
     >>> cell_xpath(et.fromstring(xml_string), query)
-    'value'
+    '9.0'
     """
     query_path = query
     try:
@@ -340,7 +339,7 @@ def process_field(input_data, field, glue, rowend):
     elif k == "multiple":
         return cell_multiple(input_data, v, glue)
     elif k == "range":
-        return cell_range(input_data, v, glue, rowend)
+        return cell_range(input_data, v)
     elif k == "table":
         return cell_table(input_data, v, glue, rowend)
         # c_field(input_data, a)
