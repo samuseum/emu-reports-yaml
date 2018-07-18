@@ -78,16 +78,16 @@ columns:
       elements:
         - conditional:
             condition: "/*[text()]"
-            target: "SummaryData[ancestor::identification/tuple[1]]"
+            target: "SummaryData[ancestor::identification]/tuple[1]"
             elements:
                 - string: <b>identifier:</b>
-                - column: "SummaryData[ancestor::identification/tuple[1]]"
+                - column: "SummaryData[ancestor::identification]/tuple[1]"
         - conditional:
-            condition: /text()
-            target: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+            condition: "/*[text()]"
+            target: "IdeDateIdentified[ancestor::identification]/tuple[1]"
             elements:
                 - string: <b>date identified:</b>
-                - column: "IdeDateIdentified[ancestor::identification/tuple[1]]"
+                - column: "IdeDateIdentified[ancestor::identification]/tuple[1]"
     - header: Collectors
       glue: ", "
       elements:
