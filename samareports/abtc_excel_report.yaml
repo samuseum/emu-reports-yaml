@@ -42,7 +42,7 @@ columns:
                 tablename: Tissue
                 elements:
                     - conditional:
-                        condition: /text() = 'Frozen'
+                        condition: "[starts-with(.,'Frozen')]"
                         target: TisStorageMedium
                         elements:
                             - column: TisTissue
