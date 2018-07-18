@@ -1,0 +1,96 @@
+---
+title: Parasitology export report
+columns:
+  - header: Prefix
+    elements:
+      - column: CatPrefix
+  - header: Registration Number
+    elements:
+      - column: CatRegNumber
+  - header: Parasite Identification
+    elements:
+      - first: [IdeAcceptedSummaryDataLocal, IdeCurrentScientificNameLocal]
+  - header: Phylum
+    elements:
+      - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentPhylumLocal]
+  - header: Class
+    elements:
+      - first: [IdeAcceptedRef/ClaClass, IdeCurrentClassLocal]
+  - header: Order
+    elements:
+      - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+  - header: Family
+    elements:
+      - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+  - header: Genus
+    elements:
+      - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+  - header: species
+    elements:
+      - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+  - header: subspecies
+    elements:
+      - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+  - header: Identification Comments
+    elements:
+      - column: IdeCurrentComments
+  - header: Host Identification
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaScientificName, HosCurrentTaxonRef/ClaScientificName]
+  - header: Host Phylum
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaPhylum, HosCurrentTaxonRef/ClaPhylum]
+  - header: Host Class
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaClass, HosCurrentTaxonRef/ClaClass]
+  - header: Host Order
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaOrder, HosCurrentTaxonRef/ClaOrder]
+  - header: Host Family
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaFamily, HosCurrentTaxonRef/ClaFamily]
+  - header: Host Genus
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaGenus, HosCurrentTaxonRef/ClaGenus]
+  - header: Host species
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaSpecies, HosCurrentTaxonRef/ClaSpecies]
+  - header: Host subspecies
+    elements:
+      - first: [HosCurrentTaxonRef/ClaCurrentNameRef/ClaSubspecies, HosCurrentTaxonRef/ClaSubspecies]
+  - header: Host Category
+    elements:
+      - column: HosCurrentCategory
+  - header: Site on Host
+    elements:
+      - column: HosCurrentSiteOnHost
+  - header: Locality
+    elements:
+      - column: BioEventRef/SummaryData
+  - header: Collectors
+    rowend: ", "
+    elements:
+      - table:
+          tablename: LocCollectorsRef_tab
+          elements:
+            - column: SummaryData
+  - header: Date Collected
+    elements:
+      - column: PreDateCollected
+  - header: Slide or Bottle
+    elements:
+      - column: ParSlideOrWet
+  - header: Quantity
+    elements:
+      - column: ParQuantity
+  - header: Type Status
+    elements:
+      - table:
+          tablename: type_status
+          elements:
+            - column: CitTypeStatus
+            - string: " of "
+            - column: ClaScientificName
+  - header: Field Numbers
+    elements:
+      - column: ParFieldNumber
