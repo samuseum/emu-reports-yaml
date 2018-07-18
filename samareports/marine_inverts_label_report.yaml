@@ -29,23 +29,34 @@ columns:
           - conditional:
                 condition: /text()
                 target: MarDepthFromMet
-                glue: " "    
+                glue: ""    
                 elements:
                     - range:
                         lower: MarDepthFromMet
                         higher: MarDepthToMet
                     - string: "m"
                 otherwise:
-                    elements:
-                        - conditional:
-                            condition: /text()
-                            glue: " "    
-                            target: AquDepthFromMet 
-                            elements:    
-                                - range: 
-                                    lower: AquDepthFromMet
-                                    higher: AquDepthToMet
-                                - string: "m"
+                  elements:
+                    - conditional:
+                        condition: /text()
+                        target: MarDepthToMet
+                        glue: ""    
+                        elements:
+                          - range:
+                              lower: MarDepthFromMet
+                              higher: MarDepthToMet
+                          - string: "m"
+                        otherwise:
+                          elements:
+                            - conditional:
+                                condition: /text()
+                                glue: ""    
+                                target: AquDepthFromMet 
+                                elements:    
+                                  - range: 
+                                      lower: AquDepthFromMet
+                                      higher: AquDepthToMet
+                                  - string: "m"
           - column: MarCollectionNotes
           - column: MarHabitat
           - column: MarLiveObservation
@@ -62,18 +73,18 @@ columns:
     - header: Taxon
       glue: " "
       elements:
-          - column: identification/tuple[1]/ClaGenus
-          - column: identification/tuple[1]/ClaSpecies
-          - column: identification/tuple[1]/ClaSubspecies
+          - first: [IdeAcceptedRef/ClaGenus, IdeCurrentTaxonRef/ClaGenus]
+          - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentTaxonRef/ClaSpecies]
+          - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentTaxonRef/ClaSubspecies]            
     - header: Family
       elements:
-          - column: identification/tuple[1]/ClaFamily
+          - first: [IdeAcceptedRef/ClaFamily, IdeCurrentTaxonRef/ClaFamily]        
     - header: Higher Classification
       glue: " "
       elements:
-          - column: identification/tuple[1]/ClaPhylum
-          - column: identification/tuple[1]/ClaSubphylum
-          - column: identification/tuple[1]/ClaClass
+          - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentTaxonRef/ClaPhylum]
+          - first: [IdeAcceptedRef/ClaSubphylum, IdeCurrentTaxonRef/ClaSubphylum]
+          - first: [IdeAcceptedRef/ClaClass, IdeCurrentTaxonRef/ClaClass]            
     - header: Identified By
       elements:
           - column: identification/tuple[1]/SummaryData
