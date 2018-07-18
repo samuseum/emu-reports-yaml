@@ -1,0 +1,56 @@
+# Museum heritage report
+---
+
+title: Museum Heritage Collection report
+columns:
+  - header: Registration Number
+    elements:
+      - column: CatPrefix
+      - column: CatRegNumber
+      - conditional:
+          condition: /text() != ''
+          target: CatSuffix
+          elements:
+            - string: "."
+            - column: CatSuffix
+  - header: Category 1 
+    elements:
+      - column: SumCategory_tab/tuple[1]/SumCategory
+  - header: Category 2
+    elements:
+      - column: SumCategory_tab/tuple[2]/SumCategory
+  - header: Category 3
+    elements:
+      - column: SumCategory_tab/tuple[3]/SumCategory
+  - header: Category 4
+    elements:
+      - column: SumCategory_tab/tuple[4]/SumCategory
+  - header: Category 5
+    elements:
+      - column: SumCategory_tab/tuple[5]/SumCategory
+  - header: Category 6
+    elements:
+      - column: SumCategory_tab/tuple[6]/SumCategory
+  - header: Object Name
+    elements:
+      - column: ObjIndigenousName
+  - header: Brief Description
+    elements:
+      - column: ObjLabel
+  - header: History
+    elements:
+      - column: ObjDescription
+  - header: Date and Place of Manufacture
+    elements:
+      - column: CreCreationNotes
+  - header: Condition
+    elements:
+      - column: CrePrimaryInscriptions
+  - header: Placement
+    elements:
+      - column: CreSecondaryInscriptions
+  - header: Conditions of Exhibit or Storage
+    elements:
+      - column: CreTertiaryInscriptions
+        
+        
