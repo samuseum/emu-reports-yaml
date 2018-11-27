@@ -1,6 +1,5 @@
 # South Australian Museum report configuration
 ---
-
 title: SAM Fauna Summary
 columns:
     - header: Registration Number
