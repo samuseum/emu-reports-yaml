@@ -1,7 +1,7 @@
 # South Australian Museum report configuration
 ---
 
-title: SAM Tissues DWC CSV Export
+title: SAM-Tissues-DWC-CSV-Export
 duplicate:
     targettable: Tissue
     indicator: CatSuffix
@@ -15,7 +15,7 @@ columns:
   - header: 'dcterms:type'
     elements:
       - conditional:
-          condition: /text() = 'HumanObservation'
+          condition: "/text() = 'HumanObservation'"
           target: CatObjectType
           elements:
             - string: Event
@@ -24,10 +24,20 @@ columns:
               - string: PhysicalObject
   - header: collectionCode
     elements:
-      - column: CatCollectionName
+      - string: AustralianBiologicalTissueCollection
   - header: scientificName
     elements:
-      - first: [IdeAcceptedSummaryDataLocal, IdeCurrentScientificNameLocal]
+      - first: [IdeAcceptedRef/ClaScientificName, IdeCurrentScientificNameLocal]
+  - header: taxonRank
+    elements:
+      - conditional:
+          condition: /text()
+          target: IdeAcceptedRef/ClaRank
+          elements:
+            - xpath: 'translate(IdeAcceptedRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
+          otherwise:
+            elements:
+              - xpath: 'translate(IdeCurrentTaxonRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
   - header: acceptedNameUsage
     elements:
       - string: ''
@@ -482,6 +492,9 @@ columns:
   - header: ggbn:preparationType
     elements:
         - column: TisTissue
+  - header: ggbn:materialSampleType
+    elements:
+        - string: tissue
   - header: ggbn:preservationType
     elements:
         - column: TisStorageMedium
