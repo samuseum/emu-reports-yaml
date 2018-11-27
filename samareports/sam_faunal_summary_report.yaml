@@ -34,7 +34,7 @@ columns:
           - column: CatObjectType
     - header: Object form
       elements:
-          - column: CatObjectform
+          - column: CatObjectForm
     - header: Date catalogued
       elements:
           - column: CatDateCatalogued
