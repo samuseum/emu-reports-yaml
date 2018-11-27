@@ -35,6 +35,13 @@ columns:
                         target: TisStorageMedium
                         elements:
                             - column: TisTissue
+                            - conditional:
+                                condition: /text()
+                                target: TisTissueDisposition
+                                elements:
+                                  - string: " ("
+                                  - column: TisTissueDisposition
+                                  - string: ")"
     - header: Frozen tissues
       rowend: "| "
       elements:
@@ -46,17 +53,13 @@ columns:
                         target: TisStorageMedium
                         elements:
                             - column: TisTissue
-    - header: Consumed tissues
-      rowend: "| "
-      elements:
-          - table:
-                tablename: Tissue
-                elements:
-                    - conditional:
-                        condition: /text() = 'Consumed'
-                        target: TisTissueDisposition
-                        elements:
-                            - column: TisTissue
+                            - conditional:
+                                condition: /text()
+                                target: TisTissueDisposition
+                                elements:
+                                  - string: " ("
+                                  - column: TisTissueDisposition
+                                  - string: ")"
     - header: Tissue comments
       elements:
           - column: TisTissueComments
@@ -256,6 +259,24 @@ columns:
     - header: Date inserted
       elements:
           - column: AdmDateInserted
+    - header: Sex
+      elements:
+          - conditional:
+                condition: /tuple/*[text()]
+                target: ZooSex_tab[ancestor::SouVoucherHeldRef]
+                elements:
+                    - table:
+                        tablename: ZooSex_tab[ancestor::SouVoucherHeldRef]
+                        rowend: ", "
+                        elements: 
+                          - column: ZooSex
+                otherwise:
+                    elements:
+                        - table:
+                              tablename: ZooSex_tab[not(ancestor::SouVoucherHeldRef)]
+                              rowend: ", "
+                              elements: 
+                                - column: ZooSex
     - header: Tissue - storage - disposition
       glue: " "
       rowend: "\n"
