@@ -24,7 +24,17 @@ columns:
       - column: CatCollectionName
   - header: scientificName
     elements:
-      - first: [IdeAcceptedSummaryDataLocal, IdeCurrentScientificNameLocal]
+      - first: [IdeAcceptedRef/ClaScientificName, IdeCurrentScientificNameLocal]
+  - header: taxonRank
+    elements:
+      - conditional:
+          condition: /text()
+          target: IdeAcceptedRef/ClaRank
+          elements:
+            - xpath: 'translate(IdeAcceptedRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
+          otherwise:
+            elements:
+              - xpath: 'translate(IdeCurrentTaxonRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
   - header: acceptedNameUsage
     elements:
       - string: ''
@@ -352,6 +362,7 @@ columns:
                 target: CatOtherNumbersType
                 elements:
                   - column: CatOtherNumbersValue
+            - con
   - header: otherCatalogNumbers
     elements:
       - string: 'ecatalogue.irn:'
