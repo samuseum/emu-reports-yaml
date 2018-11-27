@@ -591,7 +591,11 @@ def make_csv(data, headers, out_file):
         # BOM (needed by Excel to open UTF-8 file properly)
         csvfile.write(u'\ufeff'.encode('utf8'))
         fieldnames = headers
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile,
+                                fieldnames=fieldnames,
+                                escapechar='\\',
+                                doublequote=False,
+                                quoting=csv.QUOTE_ALL)
 
         writer.writeheader()
 
@@ -652,7 +656,7 @@ def main(emu_file, config_file, output_format, compress=False, silent=True):
         headers.append(a['header'])
 
     report_title = config['title']
-    dt = time.strftime(" %y%m%d%H%M")
+    dt = time.strftime("-%y%m%d%H%M")
     output_file = report_title + dt
 
     if output_format == "excel":
