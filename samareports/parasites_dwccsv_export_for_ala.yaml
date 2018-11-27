@@ -1,0 +1,410 @@
+# South Australian Museum Darwin Core exporter for the Atlas of Living Australia
+---
+
+title: SAM DWC CSV Export
+columns:
+  - header: institutionCode
+    elements:
+      - string: SAMA
+  - header: basisOfRecord
+    elements:
+      - column: CatObjectType
+  - header: 'dcterms:type'
+    elements:
+      - conditional:
+          condition: /text() = 'HumanObservation'
+          target: CatObjectType
+          elements:
+            - string: Event
+          otherwise:
+            elements:
+              - string: PhysicalObject
+  - header: collectionCode
+    elements:
+      - column: CatCollectionName
+  - header: scientificName
+    elements:
+      - first: [IdeAcceptedRef/ClaScientificName, IdeCurrentScientificNameLocal]
+  - header: taxonRank
+    elements:
+      - conditional:
+          condition: /text()
+          target: IdeAcceptedRef/ClaRank
+          elements:
+            - xpath: 'translate(IdeAcceptedRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
+          otherwise:
+            elements:
+              - xpath: 'translate(IdeCurrentTaxonRef/ClaRank, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")'
+  - header: acceptedNameUsage
+    elements:
+      - string: ''
+  - header: nameAccordingTo
+    elements:
+      - string: ''
+  - header: phylum
+    elements:
+      - first: [IdeAcceptedRef/ClaPhylum, IdeCurrentPhylumLocal]
+  - header: class
+    elements:
+      - first: [IdeAcceptedRef/ClaClass, IdeCurrentClassLocal]
+  - header: order
+    elements:
+      - first: [IdeAcceptedRef/ClaOrder, IdeCurrentOrderLocal]
+  - header: family
+    elements:
+      - first: [IdeAcceptedRef/ClaFamily, IdeCurrentFamilyLocal]
+  - header: genus
+    elements:
+      - first: [IdeAcceptedRef/ClaGenus, IdeCurrentGenusLocal]
+  - header: specificEpithet
+    elements:
+      - first: [IdeAcceptedRef/ClaSpecies, IdeCurrentSpeciesLocal]
+  - header: infraspecificEpithet
+    elements:
+      - first: [IdeAcceptedRef/ClaSubspecies, IdeCurrentSubspeciesLocal]
+  - header: vernacularName
+    elements:
+      - string: ''
+  - header: verbatimTaxonRank
+    elements:
+      - string: ''
+  - header: identifiedBy
+    elements:
+      - column: IdentificationInfo/tuple[1]/SummaryData
+  - header: dateIdentified
+    elements:
+      - column: IdentificationInfo/tuple[1]/IdeDateIdentified
+  - header: identificationRemarks
+    elements:
+      - conditional:
+          condition: /text()
+          target: IdentificationInfo/tuple[1]/IdeConfidence
+          elements:
+            - string: 'Confidence: '
+            - column: IdentificationInfo/tuple[1]/IdeConfidence
+  - header: typeStatus
+    glue: " of "
+    rowend: " | "
+    elements:
+      - table:
+          tablename: TypeStatusInfo
+          elements:
+            - column: CitTypeStatus
+            - column: ClaScientificName
+  - header: datasetName
+    elements:
+      - column: ExpExpeditionName
+  - header: waterBody
+    elements:
+      - column: LocOcean
+  - header: country
+    elements:
+      - column: LocCountry
+  - header: stateProvince
+    elements:
+      - column: LocProvinceStateTerritory
+  - header: county
+    elements:
+      - string: ''
+  - header: verbatimLocality
+    glue: " | "
+    elements:
+      - column: LocTownship
+      - column: LocNearestNamedPlace
+      - column: LocPreciseLocation
+  - header: decimalLatitude
+    elements:
+      - column: LatPreferredCentroidLatDec
+  - header: verbatimLatitude
+    elements:
+      - column: LatPreferredCentroidLatitude
+  - header: decimalLongitude
+    elements:
+      - column: LatPreferredCentroidLongDec
+  - header: verbatimLongitude
+    elements:
+      - column: LatPreferredCentroidLongitude
+  - header: coordinatePrecision
+    elements:
+      - conditional:
+          condition: /text()
+          target: LatPreferredCentroidLatDec[1]
+          elements:
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 1]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.1'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 2]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.01'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 3]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 4]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.0001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 5]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.00001'
+            - conditional:
+                condition: '[string-length(substring-after(., ".")) = 6]'
+                target: LatPreferredCentroidLatDec
+                elements:
+                  - string: '0.000001'
+  - header: verbatimCoordinateSystem
+    elements:
+      - string: ''
+  - header: locationRemarks
+    elements:
+      - string: ''
+  - header: eventID
+    elements:
+      - string: 'urn:emu.sam.sa.gov.au:Event:'
+      - column: BioEventRef/irn
+  - header: eventDate
+    glue: "/"
+    elements:
+      - conditional:
+          condition: /text()
+          target: SigDateObserved
+          elements:
+            - column: SigDateObserved
+          otherwise:
+            elements:
+              - conditional:
+                  condition: /text()
+                  target: SigDateReported
+                  elements:
+                    - column: SigDateReported
+                  otherwise:
+                    elements:
+                      - conditional:
+                          condition: /text()
+                          target: PreDateCollected
+                          elements:
+                            - column: PreDateCollected
+                          otherwise:
+                            elements:
+                              - range:
+                                  lower: ColDateVisitedFrom
+                                  higher: ColDateVisitedTo
+  - header: verbatimEventDate
+    glue: " "
+    elements:
+      - conditional:
+          condition: /text()
+          target: SigTimeObservedVerbatim
+          elements:
+            - string: 'Time:'
+            - column: SigTimeObservedVerbatim
+      - conditional:
+          condition: /text()
+          target: SigDateObservedVerbatim
+          elements:
+            - column: SigDateObservedVerbatim
+      - column: PreVerbatimDateCollected
+      - conditional:
+          condition: '[not(text())]'
+          target: SigDateObserved
+          elements:
+            - conditional:
+                condition: /text()
+                target: SigDateReported
+                elements:
+                  - string: 'Date reported:'
+                  - column: SigDateReported
+      - conditional:
+          condition: /text()
+          target: SigDateReportedVerbatim
+          elements:
+            - string: 'Date reported verbatim:'
+            - column: SigDateReportedVerbatim
+  - header: eventTime
+    elements:
+      - conditional:
+          condition: /text()
+          target: SigTimeObserved
+          elements:
+            - column: SigTimeObserved
+          otherwise:
+            elements:
+              - column: BioEventRef/ColTimeVisitedFrom
+  - header: eventRemarks
+    elements:
+      - string: ''
+  - header: 'dcterms:modified'
+    elements:
+      - column: AdmDateModified
+  - header: samplingProtocol
+    elements:
+      - first: [LocSamplingMethod, ColCollectionMethod]
+  - header: habitat
+    elements:
+      - column: BioMicrohabitatDescription
+  - header: occurrenceID
+    elements:
+      - string: ''
+  - header: catalogNumber
+    elements:
+      - column: CatPrefix
+      - column: CatRegNumber
+      - conditional:
+          condition: /text()
+          target: CatSuffix
+          elements:
+            - string: '.'
+            - column: CatSuffix
+  - header: occurrenceRemarks
+    glue: " "
+    elements:
+      - conditional:
+          condition: /text()
+          target: SigDisDirFromShore
+          elements:
+            - column: SigDisDirFromShore
+            - string: from shore.
+      - conditional:
+          condition: /text()
+          target: SigDisDirFromObserver
+          elements:
+            - column: SigDisDirFromObserver
+            - string: from observer.
+      - conditional:
+          condition: /text()
+          target: SigHowObserved
+          elements:
+            - string: 'How observed:'
+            - column: SigHowObserved
+      - conditional:
+          condition: /text()
+          target: SigSocialGroup
+          elements:
+            - string: 'Social group:'
+            - column: SigSocialGroup
+      - table:
+          tablename: ItemisedNote
+          elements:
+            - conditional:
+                condition: /text() = 'Sighting Note'
+                target: NotType
+                elements:
+                  - string: 'Sighting Note:'
+                  - column: NotText
+      - conditional:
+          condition: /text()
+          target: SigImagesAttached
+          elements:
+            - string: 'Images at South Australian Museum:'
+            - column: SigImagesAttached
+      - table:
+          tablename: ItemisedNote
+          elements:
+            - conditional:
+                condition: /text() = 'OccurrenceRemarks for ALA'
+                target: NotType
+                elements:
+                  - column: NotText
+      - conditional:
+          condition: /text()
+          target: HostInfo/tuple[1]/HosInformal
+          elements:
+            - string: 'Host:'
+            - column: HostInfo/tuple[1]/HosInformal
+      - conditional:
+          condition: /text()
+          target: HostInfo/tuple[1]/HosSiteOnHost
+          elements:
+            - string: "Site on Host:"
+            - column: HostInfo/tuple[1]/HosSiteOnHost
+  - header: recordedBy
+    glue: " "
+    rowend: ", "
+    elements:
+      - multiple: LocCollectorsLocal
+  - header: individualCount
+    elements:
+      - conditional:
+          condition: /text()
+          target: SigTotalNumberObserved
+          elements:
+            - column: SigTotalNumberObserved
+          otherwise:
+            elements:
+              - conditional:
+                  condition: /text()
+                  target: CatSpecimenCount
+                  elements:
+                    - column: CatSpecimenCount
+                  otherwise:
+                    elements:
+                      - conditional:
+                          condition:
+                          target: SexStageInfo/tuple/ZooSexStageCount
+                          elements:
+                            - xpath: 'sum((//ZooSexStageCount)[number(.) = .])'
+  - header: recordNumber
+    rowend: "|"
+    elements:
+      - table:
+          tablename: othernumbers
+          elements:
+            - conditional:
+                condition: "[starts-with(.,'Field N')]"
+                target: CatOtherNumbersType
+                elements:
+                  - column: CatOtherNumbersValue
+            - con
+  - header: otherCatalogNumbers
+    elements:
+      - string: 'ecatalogue.irn:'
+      - column: 'irn[not (parent::BioEventRef)]'
+  - header: sex
+    rowend: "|"
+    elements:
+      - table:
+          tablename: SexStageInfo
+          elements:
+            - column: ZooSex
+  - header: lifeStage
+    rowend: "|"
+    elements:
+      - table:
+          tablename: SexStageInfo
+          elements:
+            - column: ZooStage
+  - header: preparations
+    elements:
+      - column: CatObjectForm
+  - header: associatedSequences
+    elements:
+      - string: ''
+  - header: principalRecord
+    elements:
+      - string: ''
+  - header: coordinateUncertaintyInMeters
+    glue: " "
+    elements:
+      - multiple: LatRadiusNumeric
+  - header: minimumDepthInMeters
+    elements:
+      - first: [MarDepthFromMet, AquDepthFromMet]
+  - header: maximumDepthInMeters
+    elements:
+      - first: [MarDepthtoMet, AquDepthtoMet]
+  - header: associatedTaxa
+    elements:
+      - conditional:
+          condition:
+          target: HostInfo/tuple[1]
+          elements:
+            - string: 'Host: '
+            - column: 'Hostinfo/tuple[1]/ClaScientificName'

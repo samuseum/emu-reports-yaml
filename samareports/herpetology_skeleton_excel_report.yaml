@@ -1,0 +1,152 @@
+# South Australian Museum report configuration
+---
+
+title: Herpetology skeleton report
+columns:
+    - header: Registration Number
+      elements:
+          - column: CatPrefix
+          - column: CatRegNumber
+          - conditional:
+              condition: /text() != ''
+              target: CatSuffix
+              elements:
+                  - string: "."
+                  - column: CatSuffix
+    - header: Other Numbers
+      elements:
+        - table:
+            tablename: OtherNumbers
+            glue: " "
+            rowend: " "
+            elements:
+                - column: CatOtherNumbersSource
+                - column: CatOtherNumbersType
+                - column: CatOtherNumbersValue
+    - header: Family
+      elements:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            elements:
+              - column: ClaFamily
+            otherwise:
+              elements:
+                - column: IdeCurrentFamilyLocal
+    - header: Genus
+      elements:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            elements:
+              - column: ClaGenus
+            otherwise:
+              elements:
+                - column: IdeCurrentGenusLocal
+    - header: Species
+      elements:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            elements:
+              - column: IdeAcceptedRef/ClaSpecies
+            otherwise:
+              elements:
+                - column: IdeCurrentSpeciesLocal
+    - header: Subspecies
+      elements:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            elements:
+              - column: ClaSubspecies
+            otherwise:
+              elements:
+                - column: IdeCurrentSubspeciesLocal
+    - header: taxon
+      glue: " "
+      elements:
+        - conditional:
+            condition: /*[text()]
+            target: IdeAcceptedRef
+            elements:
+              - column: ClaGenus
+              - column: ClaSpecies
+              - column: ClaSubspecies
+            otherwise:
+              elements:
+                - column: IdeCurrentGenusLocal
+                - column: IdeCurrentSpeciesLocal
+                - column: IdeCurrentSubspeciesLocal
+    - header: Collection Date
+      elements:
+        - column: PreDateCollected
+    - header: Country
+      elements:
+        - column: LocCountry
+    - header: State
+      elements:
+        - column: LocProvinceStateTerritory
+    - header: Nearest Named Place
+      elements:
+        - column: LocNearestNamedPlace
+    - header: Precise Location
+      elements:
+        - column: LocPreciseLocation
+    - header: Latitude (DMS)
+      elements:
+        - column: LatPreferredCentroidLatitude
+    - header: Longitude (DMS)
+      elements:
+        - column: LatPreferredCentroidLongitude
+    - header: Latitude (Decimal)
+      elements:
+        - column: LatPreferredCentroidLatDec
+    - header: Longitude (Decimal)
+      elements:
+        - column: LatPreferredCentroidLongDec
+    - header: Collector
+      glue: "; "
+      elements:
+        - multiple: LocCollectorsRef_tab/tuple/SummaryData
+    - header: Notes
+      elements:
+        - column: NotNotes
+    - header: Itemised Notes
+      glue: ": "
+      rowend: "\n"
+      elements:
+        - table:
+            tablename: ItemisedNotes
+            elements:
+              - column: NotType
+              - column: NotText
+    - header: Location
+      elements:
+        - column: LocPermanentLocationRef/SummaryData
+    - header: ABTC Number
+      elements:
+        - column: BioTissueRecordRef/SummaryData
+    - header: Snout vent length
+      rowend: "|"
+      elements:
+        - table:
+            tablename: measurements
+            elements:
+              - conditional:
+                  condition: /text() = 'Snout vent length'
+                  target: MeaType
+                  elements:
+                    - column: MeaValue
+                    - column: MeaUnit
+    - header: Sex
+      glue: " | "
+      elements:
+        - table:
+            tablename: ZooSex_tab
+            elements:
+              - column: ZooSex
+    - header: Object form
+      elements:
+        - column: CatObjectForm
+            

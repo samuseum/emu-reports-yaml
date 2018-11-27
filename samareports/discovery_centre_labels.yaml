@@ -1,0 +1,161 @@
+# South Australian Museum report configuration
+---
+
+title: Discovery Centre labels
+columns:
+    - header: regno
+      elements:
+          - column: CatBarcode
+    - header: Identification
+      glue: " "
+      elements:
+        - conditional:
+            condition: /text()
+            target: IdeAcceptedRef/ClaGenus
+            elements:
+              - conditional:
+                  condition: /text()
+                  target: ClaGenus
+                  elements:
+                    - column: ClaGenus
+                    - column: ClaSpecies
+                    - column: ClaSubspecies
+                  otherwise:
+                    elements:
+                      - conditional:
+                          condition: /text()
+                          target: ClaFamily
+                          elements:
+                            - column: ClaFamily
+                          otherwise:
+                            elements:
+                              - conditional:
+                                  condition: /text()
+                                  target: ClaOrder
+                                  elements:
+                                    - column: ClaOrder
+                                  otherwise:
+                                    elements:
+                                      - conditional:
+                                          condition: /text()
+                                          target: ClaClass
+                                          elements:
+                                            - column: ClaClass
+                                          otherwise:
+                                            elements:
+                                              - conditional:
+                                                  condition: /text()
+                                                  target: ClaOrder
+                                                  elements:
+                                                    - column: ClaOrder
+                                                  otherwise:
+                                                    elements:
+                                                      - conditional:
+                                                          condition: /text()
+                                                          target: ClaPhylum
+                                                          elements:
+                                                            - column: ClaPhylum
+            otherwise:
+              elements:
+                - conditional:
+                    condition: /text()
+                    target: IdeCurrentGenusLocal
+                    elements:
+                      - column: IdeCurrentGenusLocal
+                      - column: IdeCurrectSpeciesLocal
+                      - column: IdeCurrentSubspeciesLocal
+                    otherwise:
+                      elements:
+                        - conditional:
+                            condition: /text()
+                            target: IdeCurrentFamilyLocal
+                            elements:
+                              - column: IdeCurrentFamilyLocal
+                            otherwise:
+                              elements:
+                                - conditional:
+                                    condition: /text()
+                                    target: IdeCurrentOrderLocal
+                                    elements:
+                                      - column: IdeCurrentOrderLocal
+                                    otherwise:
+                                      elements:
+                                        - conditional:
+                                            condition: /text()
+                                            target: IdeCurrentClassLocal
+                                            elements:
+                                              - column: IdeCurrentClassLocal
+                                            otherwise:
+                                              elements:
+                                                - conditional:
+                                                    condition: /text()
+                                                    target: IdeCurrentOrderLocal
+                                                    elements:
+                                                      - column: IdeCurrentOrderLocal
+                                                    otherwise:
+                                                      elements:
+                                                        - conditional:
+                                                            condition: /text()
+                                                            target: IdeCurrentPhylumLocal
+                                                            elements:
+                                                              - column: IdeCurrentPhylumLocal
+    - header: "Common Name"
+      elements:
+        - conditional:
+            condition: /text()
+            target: IdeAcceptedRef/ComName_tab/tuple[1]/ComName
+            elements:
+              - column: IdeAcceptedRef/ComName_tab/tuple[1]/ComName
+            otherwise:
+              elements:
+                - conditional:
+                    condition: /text()
+                    target: IdeCurrentTaxonRef/ComName_tab/tuple[1]/ComName
+                    elements:
+                      - column: IdeCurrentTaxonRef/ComName_tab/tuple[1]/ComName
+                    otherwise:
+                      elements:
+                        - column: NotText0/tuple[2]/NotText
+    - header: "Collection Date"
+      elements:
+        - conditional:
+            condition: /text()
+            target: PreDateCollectedVerbatim
+            elements:
+              - column: PreDateCollectedVerbatim
+            otherwise:
+              elements:
+                - column: PreDateCollected
+    - header: "Collection Site"
+      glue: ", "
+      elements:
+        - column: BioEventRef/LocCountry
+        - column: BioEventRef/LocProvinceStateTerritory
+        - column: BioEventRef/LocSpecialGeographicUnit
+        - column: BioEventRef/LocNearestNamedPlace          
+        - column: BioEventRef/LocPreciseLocation
+    - header: Collector
+      rowend: ", "
+      elements:
+        - table:
+            tablename: LocCollectorsRef_tab
+            elements:
+              - conditional:
+                  condition: /text() = 'Person'
+                  target: NamPartyType
+                  elements:
+                    - column: NamFullName
+                  otherwise:
+                    elements:
+                      - conditional:
+                          condition: /text() = 'Organisation'
+                          target: NamPartyType
+                          elements:
+                            - column: NamOrganisation
+                          otherwise:
+                            elements:
+                              - conditional:
+                                  condition: /text() = 'Collaboration'
+                                  target: NamPartyType
+                                  elements:
+                                    - column: ColCollaborationName
