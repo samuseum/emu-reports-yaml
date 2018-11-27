@@ -68,7 +68,7 @@ columns:
         - string: AUD
     - header: Valuation Method
       elements:
-        - column: tuple[1]/ValReasonForValuation
+        - string: Cost of Recollection
     - header: Valued by
       elements:
         - column: tuple[1]/ValValuedByRef/SummaryData
@@ -80,4 +80,4 @@ columns:
         - string: ""
     - header: Comments
       elements:
-        - string: ""
+        - column: tuple[1]/ValReasonForValuation
